@@ -1,0 +1,18 @@
+<fieldset>
+            <% if current_user.money_in != 0.0 %>
+                <legend><%= current_user.name %>'s Portfolio</legend>
+                <label><%= current_user.net_adjusted >= 0 ? "USD made" : "USD lost" %></label>
+                <%= '%.2f' % current_user.net_adjusted %><br>
+                <label>Total portfolio worth: </label>
+                <%= '%.2f' % current_user.net_unadjusted %><br><br>
+
+                <label>Coin distribution: </label>
+                <ul>
+                <%= coin_distribution(current_user).html_safe %>
+                </ul>
+
+            <% else %>
+                You have no current portfolio!
+            <% end %>
+            <%= button_to "View Wallets", user_wallets_path(current_user), :method => "get" %>
+</fieldset>

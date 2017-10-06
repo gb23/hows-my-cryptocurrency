@@ -1,0 +1,6 @@
+<%= "<li>".html_safe if params[:action] != "show" || params[:controller] != "transactions" %>
+    <%= "Coin Type: #{transaction.coin.name}<br>".html_safe if params[:controller] != "wallets"%>
+    USD spent: <%= '%.2f' % transaction.money_in %><br>
+    Price Per Coin: <%= '%.2f' % transaction.price_per_coin %><br> 
+    Coins purchased: <%= '%.4f' % transaction.quantity %><br><br>
+<%= "</li>".html_safe if params[:action] != "show" || params[:controller] != "transactions" %>

@@ -1,0 +1,4 @@
+<fieldset>
+    <legend><%= current_user.name %>'s Transaction History</legend>
+        <ol><%= render partial: "transactions/list", collection: @transactions, as: :transaction %></ol>
+</fieldset>

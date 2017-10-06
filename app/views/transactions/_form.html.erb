@@ -1,0 +1,46 @@
+<% if transaction.errors.any? || transaction.coin.errors.any? %>
+    <div id="error_explaination">
+        <h2>
+            <%= pluralize(transaction.errors.count + transaction.coin.errors.count, "error") %>
+            prohibited this transaction from being saved:    
+        </h2>
+        <ul>            
+            <% transaction.coin.errors.messages.values.each do |msg| %>
+                <li><%= msg.first %></li>
+            <% end %>
+            <% transaction.errors.full_messages.each do |msg| %>
+                <li><%= msg %></li>
+            <% end %>
+        </ul>
+    </div>
+<% end %>
+<%= form_for transaction, :url => {:action => action} do |f| %>    
+
+    <%= f.label :coin_id, "Select Coin Type" %>
+    <%= f.collection_select :coin_id, wallet_coins(current_user), :id, :name, include_blank: true%>
+
+    <fieldset>
+        <legend>(OR If using another cryptocurrency, specify the following:) </legend> 
+        <%= f.fields_for :coin, transaction.coin do |coin_fields| %>
+
+            <%= coin_fields.label :name %>
+            <input type="text" name="transaction[coin_attributes][name]" id="transaction_coin_attributes_name" value=<%= fill_nested_coin_name_for(transaction)%> ><br>
+
+            <%= coin_fields.label :last_value, "Current trading price: $" %>
+            <% if @transaction.coin.errors[:last_value].any? %>
+                <div class="field_with_errors">
+            <% end %>
+            <input step="0.01" type="number" name="transaction[coin_attributes][last_value]" id="transaction_coin_attributes_last_value"  value=<%= fill_nested_coin_value_for(transaction) %>>
+            <% if @transaction.coin.errors[:last_value].any? %>
+                </div>
+            <% end %>
+        <% end %>
+    </fieldset>
+
+    <%= f.label :money_in, "Money transferred into coins: $" %>
+    <%= f.number_field :money_in, :step => 0.01 %><br>
+
+    <%= f.label :price_per_coin, "Price per coin: $" %>
+    <%= f.number_field :price_per_coin, :step => 0.01 %><br>
+    <%= f.submit %>
+<% end %> 

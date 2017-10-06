@@ -1,0 +1,26 @@
+<h1> <%= current_user.name %>'s <%= @wallet.name %> </h1>
+
+<fieldset>
+<legend><%= @wallet.coin.name %> value</legend>
+<%= @wallet.coin.name %> price: $<%= '%.2f' % @wallet.coin.last_value %>
+</fieldset>
+
+<fieldset>
+<legend>Wallet Stats</legend>
+<ul>
+    <li>Total Coins: <%= '%.4f' % @wallet.total_coins %> </li>
+    <li><label><%= @wallet.net_adjusted >= 0 ? "USD made:" : "USD lost:" %></label>
+        <%= '%.2f' % @wallet.net_adjusted %> </li>
+    <li>Total USD spent on <%= @wallet.coin.name %>: <%= '%.2f' % @wallet.money_in %></li>
+    <li>Total USD value of wallet:  <%= '%.2f' % @wallet.net_unadjusted %></li>
+</ul>
+
+<p> Values calculated using <%= @wallet.coin.name %> price of $<%= '%.2f' % @wallet.coin.last_value %> found on <%= @wallet.coin.updated_at %></p>
+</fieldset>
+
+<fieldset>
+<legend><%= @wallet.coin.name %> Transaction History</legend>
+<ol>
+<%= render partial: "transactions/list", collection: Transaction.where(["user_id = ? and coin_id = ?", current_user.id, @wallet.coin_id]), as: :transaction %>
+</ol>
+</fieldset>

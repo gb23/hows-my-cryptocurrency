@@ -1,0 +1,19 @@
+<h1> <%= current_user.name %>'s Wallets </h1>
+
+<ul>
+    <% current_user.wallets.each do |wallet| %>
+        <li>
+            <fieldset>
+            <% if !empty?(wallet) %>
+                <legend><%=link_to wallet.name , user_wallet_path(current_user, wallet)%></legend>
+                Total Coins: <%= '%.4f' % wallet.total_coins %> <br>
+                <label><%= wallet.net_adjusted >= 0 ? "USD made" : "USD lost" %></label>
+                <%= '%.2f' % wallet.net_adjusted %><br>
+            <% else %>
+                <legend><%=wallet.name %></legend>
+                Wallet Empty
+            <% end %>
+            </fieldset>
+        </li>
+    <% end %>
+</ul>

@@ -1,0 +1,3 @@
+class CoinsController < ApplicationController
+   
+end

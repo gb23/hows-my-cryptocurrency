@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  user_id: 1
+  coin_id: 1
+  total_coins: 1.5
+  money_in: 1.5
+  net_unadjusted: 1.5
+  net_adjusted: 1.5
+
+two:
+  name: MyString
+  user_id: 1
+  coin_id: 1
+  total_coins: 1.5
+  money_in: 1.5
+  net_unadjusted: 1.5
+  net_adjusted: 1.5
