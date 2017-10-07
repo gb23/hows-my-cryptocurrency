@@ -3,6 +3,13 @@
 <fieldset>
 <legend><%= @wallet.coin.name %> value</legend>
 <%= @wallet.coin.name %> price: $<%= '%.2f' % @wallet.coin.last_value %>
+
+<%= form_for Coin.new, :url => url_for(:controller => 'wallets', :action => 'create') do |f| %>
+    <%= f.label :last_value, "Enter theoretical price: $"%>
+    <%= f.number_field :last_value %>
+    <%= f.hidden_field :name, value: @wallet.coin.name%>
+    <%= f.submit "Calculate With Theoretical Price"%>
+<% end %>
 </fieldset>
 
 <fieldset>
