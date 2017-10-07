@@ -10,12 +10,10 @@ class WalletsController < ApplicationController
         if !authenticate(@wallet)
             redirect_to user_wallets_path(current_user), notice: "Only your own wallets are viewable."
         end
-        @wallet.lookup_current_price
+        @wallet.get_and_save_current_price 
         # @wallet.coin.last_value = PriceScraper.send("get_#{@wallet.coin.name.downcase}_price")
         # @wallet.coin.save
         @wallet.update_wallet_with_coin_value
-
-
     end
 
     def create
