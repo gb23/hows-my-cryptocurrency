@@ -34,7 +34,7 @@ class Wallet < ApplicationRecord
         self.net_adjusted = self.net_unadjusted - self.money_in
     end
 
-    def lookup_current_price #scrape
+    def lookup_current_price 
         if self.coin.name == "Ethereum" || self.coin.name == "Bitcoin" || self.coin.name == "Litecoin" 
             self.coin.last_value = CoinbaseApi.send("get_#{self.coin.name.downcase}_price")
             self.coin.save
