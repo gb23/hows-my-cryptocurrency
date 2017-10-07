@@ -11,11 +11,11 @@ class Wallet < ApplicationRecord
     end
 
     def update_wallet_with_coin_value
-        if self.coin.name == "Ethereum" || self.coin.name == "Bitcoin" || self.coin.name == "Litecoin" 
+        #if self.coin.name == "Ethereum" || self.coin.name == "Bitcoin" || self.coin.name == "Litecoin" 
             self.calculate_unadjusted
             self.calculate_adjusted
             self.save
-        end
+        #end
     end
 
     def sum_coins(tx)
