@@ -3,7 +3,15 @@
 <fieldset>
 <legend><%= @wallet.coin.name %> value</legend>
 <%= @wallet.coin.name %> price: $<%= '%.2f' % @wallet.coin.last_value %>
-
+<% if @wallet.coin.name == "Ethereum" || @wallet.coin.name == "Bitcoin" || @wallet.coin.name == "Litecoin" %>
+    <% if @wallet.coin.last_value != @wallet.get_current_price%>
+        <%= link_to "Get current price", user_wallet_path(current_user, wallet_for(current_user, @wallet.name))%>
+    <% end %>
+<% else %>
+    <% if @wallet.coin.last_value != Coin.find_by(name: @wallet.coin.name).last_value %>
+        <%= link_to "Get current price", user_wallet_path(current_user, wallet_for(current_user, @wallet.name))%>
+    <% end %>
+<% end %>
 <%= form_for Coin.new, :url => url_for(:controller => 'wallets', :action => 'create') do |f| %>
     <%= f.label :last_value, "Enter theoretical price: $"%>
     <%= f.number_field :last_value %>
@@ -21,13 +29,19 @@
     <li>Total USD spent on <%= @wallet.coin.name %>: <%= '%.2f' % @wallet.money_in %></li>
     <li>Total USD value of wallet:  <%= '%.2f' % @wallet.net_unadjusted %></li>
 </ul>
-
-<p> Values calculated using <%= @wallet.coin.name %> price of $<%= '%.2f' % @wallet.coin.last_value %> found on <%= @wallet.coin.updated_at %></p>
+<% if @wallet.coin.last_value == (@wallet.get_current_price || Coin.find_by(name: @wallet.coin.name).last_value)%>
+    <p> Values calculated using <%= @wallet.coin.name %> price of $<%= '%.2f' % @wallet.coin.last_value %> found on <%= @wallet.coin.updated_at %></p>
+<% else %>
+    <p> Values calculated using theoretical <%= @wallet.coin.name %> price of $<%= '%.2f' % @wallet.coin.last_value %> </p>
+<% end %>
 </fieldset>
 
-<fieldset>
-<legend><%= @wallet.coin.name %> Transaction History</legend>
-<ol>
-<%= render partial: "transactions/list", collection: Transaction.where(["user_id = ? and coin_id = ?", current_user.id, @wallet.coin_id]), as: :transaction %>
-</ol>
-</fieldset>
+
+<% if @wallet.coin.last_value == (@wallet.get_current_price || Coin.find_by(name: @wallet.coin.name).last_value)%>
+    <fieldset>
+    <legend><%= @wallet.coin.name %> Transaction History</legend>
+    <ol>
+    <%= render partial: "transactions/list", collection: Transaction.where(["user_id = ? and coin_id = ?", current_user.id, @wallet.coin_id]), as: :transaction %>
+    </ol>
+    </fieldset>
+<% end %>
