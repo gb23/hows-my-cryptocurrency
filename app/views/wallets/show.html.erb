@@ -10,6 +10,15 @@
 <% else %>
     <% if @wallet.coin.last_value != Coin.find_by(name: @wallet.coin.name).last_value %>
         <%= link_to "Get current price", user_wallet_path(current_user, wallet_for(current_user, @wallet.name))%>
+    <% else %>
+        <fieldset>
+        <legend>Set a new, current price</legend>
+        <%= form_for Coin.find_by(name: @wallet.coin.name) do |f| %>
+            <%= f.label :last_value, "$"%>
+            <%= f.number_field :last_value%>
+            <%= f.submit %>
+        <% end %>
+        </fieldset>
     <% end %>
 <% end %>
 <%= form_for Coin.new, :url => url_for(:controller => 'wallets', :action => 'create') do |f| %>
