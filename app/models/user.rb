@@ -16,7 +16,7 @@ class User < ApplicationRecord
     final_unadjusted = 0
     final_money_in = 0
     self.wallets.each do |wallet| 
-      wallet.lookup_current_price
+      wallet.get_and_save_current_price 
       wallet.update_wallet_with_coin_value
       final_adjusted += wallet.net_adjusted
       final_unadjusted +=wallet.net_unadjusted
