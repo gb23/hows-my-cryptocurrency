@@ -3,5 +3,5 @@
     USD spent: <%= '%.2f' % transaction.money_in %><br>
     Price Per Coin: <%= '%.2f' % transaction.price_per_coin %><br> 
     Coins purchased: <%= '%.4f' % transaction.quantity %><br>
-    <%= link_to "change", edit_user_transaction_path(current_user,transaction) %><br><br>
+    <%= link_to "more...", user_transaction_path(current_user,transaction) if show_link_to_more == true %><br><br>
 <%= "</li>".html_safe if params[:action] != "show" || params[:controller] != "transactions" %>
