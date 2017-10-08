@@ -6,7 +6,7 @@ class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable  
+         :recoverable, :rememberable, :trackable, :validatable, :omniauthable 
   
   #when user is created, user gets wallets of all coin types
   after_create :give_wallets
