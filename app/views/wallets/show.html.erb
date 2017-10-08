@@ -47,10 +47,11 @@
 
 
 <% if @wallet.coin.last_value == (@wallet.get_current_price || Coin.find_by(name: @wallet.coin.name).last_value)%>
+    <%= render partial: "transactions/add" %>
     <fieldset>
     <legend><%= @wallet.coin.name %> Transaction History</legend>
     <ol>
-    <%= render partial: "transactions/list", collection: Transaction.where(["user_id = ? and coin_id = ?", current_user.id, @wallet.coin_id]), as: :transaction %>
+    <%= render partial: "transactions/list", collection: Transaction.where(["user_id = ? and coin_id = ?", current_user.id, @wallet.coin_id]), as: :transaction, locals: {show_link_to_more: true} %>
     </ol>
     </fieldset>
 <% end %>
