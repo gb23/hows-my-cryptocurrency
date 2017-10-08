@@ -12,7 +12,7 @@
                 </ul>
 
             <% else %>
-                You have no current portfolio!
+                <p>You have no current portfolio; create a transaction to get going!</p>
             <% end %>
             <%= button_to "View Wallets", user_wallets_path(current_user), :method => "get" %>
 </fieldset>
