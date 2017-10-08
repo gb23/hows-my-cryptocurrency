@@ -1,4 +1,5 @@
+<%= render partial: "transactions/add" %>
 <fieldset>
     <legend><%= current_user.name %>'s Transaction History</legend>
-        <ol><%= render partial: "transactions/list", collection: @transactions, as: :transaction %></ol>
+        <ol><%= render partial: "transactions/list", collection: @transactions, as: :transaction, locals: {show_link_to_more: true} %></ol>
 </fieldset>
