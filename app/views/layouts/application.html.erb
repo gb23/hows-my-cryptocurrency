@@ -1,20 +1,28 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>CryptocurrencyAnalysis</title>
+    <title>Cryptocurrency Analysis</title>
     <%= csrf_meta_tags %>
-
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
     <% if signed_in? %>
-      <%= link_to  "Portfolio", user_path(current_user)%>
-      <%= link_to "Transactions", user_transactions_path(current_user)%>
-      <%= link_to "Wallets", user_wallets_path(current_user)%>
-      <%= link_to("Sign Out", destroy_user_session_path, :method => 'delete') %>
-      <br>
+    
+      <header class="sans-serif bg-black-90 fixed w-100 ph3 pv3 pv4-ns ph4-m ph5-l">
+        <nav class="f6 fw6 ttu tracked">
+          <%= link_to  "Portfolio", user_path(current_user), class:"link dim white dib mr3"  %>
+
+          <%= link_to "Transactions", user_transactions_path(current_user), class: "link dim white dib mr3"%>
+
+          <%= link_to "Wallets", user_wallets_path(current_user), class: "link dim white dib mr3"%>
+
+          <span class="nav_link_right">
+            <%= link_to("Sign Out", destroy_user_session_path, :method => 'delete', class: "link dim white dib") %>
+          </span> 
+        </nav>
+      </header>
     <% end %>
 
-    <div class="measure center">
+    <div class="measure center sans-serif">
     <%= content_tag(:div, flash[:error], :id => "flash_error") if flash[:error] %>
     <%= content_tag(:div, flash[:notice], :id => "flash_notice") if flash[:notice] %>
     <%= content_tag(:div, flash[:alert], :id => "flash_alert") if flash[:alert] %>
@@ -22,7 +30,8 @@
 
   </head>
 
-  <body>        
+  <body class="sans-serif">        
     <%= yield %>
   </body>
+  
 </html>
