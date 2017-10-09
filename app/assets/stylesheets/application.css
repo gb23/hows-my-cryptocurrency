@@ -19,8 +19,38 @@
     background-color: red;
     /* display: inline-block; */
   } 
+/* 
+  .header_float {
+    min-width: 100%;
+    position: fixed;
+    background: rgb(123, 123, 223);
+    top: 0px;
+    right: 0px;
+    padding: 8px;
+  }
 
+  .header_link {
+    margin-left: 2%;
+  }
+  .header_link_left {
+    margin-left: 5%;
+    text-decoration: none;
+    
+  }
 
+  .link_effect a{
+    text-decoration: none;
+    color: black;
+   
+  }
+   .link_effect a:hover{
+    color: white;
+  } */
+  .nav_link_right {
+    float: right;
+    /* margin-right: 5%;
+    text-decoration: none; */
+  } 
 
 /*! TACHYONS v4.8.1 | http://tachyons.io */
 /*
