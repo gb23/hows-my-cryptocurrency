@@ -23,4 +23,4 @@
 .byebug_history
 /db/seeds.rb
 
-/config/initializers/devise.rb
+/.env
