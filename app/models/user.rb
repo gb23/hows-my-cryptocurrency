@@ -3,6 +3,9 @@ class User < ApplicationRecord
   has_many :coins, :through => :transactions 
   has_many :wallets
 
+  validates :name, presence: true
+  validates :email, presence: true
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -10,6 +13,8 @@ class User < ApplicationRecord
   
   #when user is created, user gets wallets of all coin types
   after_create :give_wallets
+
+  
 
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|

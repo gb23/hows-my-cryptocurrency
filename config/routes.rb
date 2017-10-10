@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   #resources :coins
-  devise_for :users, :controllers => { :omniauth_callbacks => "callbacks" }
+  devise_for :users, :controllers => { omniauth_callbacks: "callbacks", registrations: "registrations"}
   
   resources :users, :only => [:show] do
     resources :wallets

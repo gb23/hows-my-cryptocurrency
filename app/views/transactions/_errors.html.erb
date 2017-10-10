@@ -1,0 +1,14 @@
+<div id="error_side" class="measure center pa0 ba b--transparent ph0 mh0 bg-black-90 top-0 ph3 ph4-m ph5-l tc db lh-copy f6">
+        <h2>
+            <%= pluralize(transaction.errors.count + transaction.coin.errors.count, "error") %>
+            prohibited this transaction from being saved:    
+        </h2>
+        <ul>            
+            <% transaction.coin.errors.messages.values.each do |msg| %>
+                <li><%= msg.first %></li>
+            <% end %>
+            <% transaction.errors.full_messages.each do |msg| %>
+                <li><%= msg %></li>
+            <% end %>
+        </ul>
+</div>
