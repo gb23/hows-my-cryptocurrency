@@ -11,10 +11,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :omniauth_providers => [:facebook] 
   
-  #when user is created, user gets wallets of all coin types
+  #when user is created, user gets wallets of BTC, LTC, ETH
   after_create :give_wallets
-
-  
 
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
@@ -24,7 +22,7 @@ class User < ApplicationRecord
       user.email = auth.info.email
       user.password = Devise.friendly_token[0,20]
     end
-end
+  end
   
   def update_numbers
     final_adjusted = 0
@@ -43,14 +41,12 @@ end
     self.net_unadjusted = final_unadjusted
     self.save
   end
-  
-  
+
   private
 
   def give_wallets
     Coin.all.each do |coin|
-          self.wallets.create(name: coin.name, coin_id: coin.id ) if coin.name == "Bitcoin" || coin.name == "Ethereum" || coin.name == "Litecoin"
+          self.wallets.create(name: coin.name, coin_id: coin.id ) if big_3?(coin)
     end
   end
-
 end
