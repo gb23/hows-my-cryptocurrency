@@ -4,9 +4,9 @@
             <% if current_user.money_in != 0.0 %>
                 <legend class="f3 fw6 ph0 mh0"><%= current_user.name %>'s Portfolio</legend>
                 <label class="fw6 lh-copy f6"><%= current_user.net_adjusted >= 0 ? "USD made" : "USD lost:" %></label>
-                <%= format_dollar_amount_of (current_user.net_adjusted) %><br>
+                <%= format_dollar_amount_of(current_user.net_adjusted, "color") %><br>
                 <label class="fw6 lh-copy f6">Total portfolio worth: </label>
-                <%= format_dollar_amount_of (current_user.net_unadjusted)%><br><br>
+                <%= format_dollar_amount_of(current_user.net_unadjusted, "color")%><br><br>
 <h1 class="f3 fw6 mh0">Coin Distribution: </h1>
 
 
