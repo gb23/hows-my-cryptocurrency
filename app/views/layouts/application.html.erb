@@ -20,6 +20,8 @@
           </span> 
         </nav>
       </header>
+    <% else %>
+      <%= render "devise/sessions/home" %>
     <% end %> 
 
   <% if flash[:alert].nil?%>
