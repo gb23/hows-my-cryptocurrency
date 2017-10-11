@@ -8,7 +8,7 @@
    <div class="mt3">
     <%= f.label :coin_id, "Select Coin Type", class: "lh3 fw6 f6 dib" %>
     <span class="dib">
-    <%= f.collection_select :coin_id, wallet_coins(current_user), :id, :name, include_blank: true%>
+    <%= f.collection_select :coin_id, transaction.wallet_coins(current_user), :id, :name, include_blank: true%>
     </span>
     </div>
     <fieldset class="mb3 pl4 b--moon-silver">
