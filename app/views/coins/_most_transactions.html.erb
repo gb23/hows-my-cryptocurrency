@@ -1,0 +1,15 @@
+<% if transaction[0] == last_tx_name %>
+    <li class='ph3 pv2'>
+<% else %>
+    <li class='ph3 pv2 bb b--light-silver'>
+<% end %>
+   <span class="tr" >
+    <%= transaction[0]%>
+    </span>
+    <span style=" position: absolute;right: 50%;" >
+    <%= transaction[1]%>
+    </span>
+   <br><br>
+</li>
+
+
