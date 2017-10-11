@@ -24,7 +24,6 @@ class TransactionsController < ApplicationController
 
     def update
         @transaction = Transaction.find(params[:id])
-
         @transaction.money_in = transaction_params[:money_in]
         @transaction.price_per_coin = transaction_params[:price_per_coin]
         if transaction_params[:coin_attributes][:name] == ""
