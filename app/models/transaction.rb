@@ -17,9 +17,9 @@ class Transaction < ApplicationRecord
         @transaction_params ? @transaction_params[:coin_attributes][:name].empty? : true 
     end
 
-    def coin_attributes=(coin_attributes) #{"name"=>"", "last_value"=>"0.0"}
-        coin_attributes.each do |coin_attribute|  #name => "xyz"               last_value => 0.0
-            if !coin_attribute[1].empty? #&& coin_attribute[1] != 0.0
+    def coin_attributes=(coin_attributes)
+        coin_attributes.each do |coin_attribute| 
+            if !coin_attribute[1].empty? 
 
                 if coin_attribute[0] == "name"
                     coin_attribute[1] = coin_attribute[1].humanize
@@ -27,20 +27,14 @@ class Transaction < ApplicationRecord
                     if !Coin.find_by(name: coin_attribute[1])
 
                         coin = Coin.new(name: coin_attribute[1])
-                        self.coin = coin
-
-                        #self.user.wallets.build(name: coin_attribute[1], coin_id: coin.id )
-    
+                        self.coin = coin    
                     else
-
                         coin = Coin.find_by(name: coin_attribute[1])
                         self.coin = coin
-                       
                     end
+
                 elsif coin_attribute[0] == "last_value" && coin_attribute[1] != "0.0"
-                   
                     self.coin = Coin.new if self.coin.nil?
-                    
                     self.coin.last_value = coin_attribute[1] 
                 end
             end
