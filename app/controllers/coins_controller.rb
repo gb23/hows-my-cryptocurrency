@@ -8,6 +8,10 @@ class CoinsController < ApplicationController
         redirect_to user_wallet_path(current_user, wallet)
     end
 
+    def show
+        @most_transactions = Coin.most_transactions
+    end
+
     private
     def wallet_with_coin(name, current_user)
         Wallet.where(["user_id = ? and name = ?", current_user.id, name]).first
