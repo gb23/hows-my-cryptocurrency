@@ -12,8 +12,8 @@ example: user has_many :coins, :through => :transactions
 example: the "through" part is a transaction, which has many user submittable attributes; for instance, the price of the transaction.
 - [x] Include reasonable validations for simple model objects (list of model objects with validations e.g. User, Recipe, Ingredient, Item)
 Coin, Transaction, User.  (Wallet is created internally based on the validated data of the other classes)
-- [ ] Include a class level ActiveRecord scope method (model object & class method name and URL to see the working feature e.g. User.most_recipes URL: /users/most_recipes)
-
+- [x] Include a class level ActiveRecord scope method (model object & class method name and URL to see the working feature e.g. User.most_recipes URL: /users/most_recipes)
+coins model object, most_transactions class method name, URL: /coins/most_transactions
 - [x] Include a nested form writing to an associated model using a custom attribute writer (form URL, model name)
 /users/transactions/new, Coin
 - [x] Include signup 
