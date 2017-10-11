@@ -16,11 +16,11 @@
         <%= link_to "Get current price", user_wallet_path(current_user, wallet_for(current_user, @wallet.name)), class: "link black-80 b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"%>
     <% else %>
         <fieldset class="ba b--transparent ph0 mh0">
-        <legend legend class="f3 fw6 ph0 mh0"> Set a new, current price</legend>
+        <legend legend class="f3 fw6 ph0 mh0"></legend>
         <%= form_for Coin.find_by(name: @wallet.coin.name) do |f| %>
             <%= f.label :last_value, "$", class: "fw6 lh-copy f6"%>
             <%= f.number_field :last_value, :min => 0, :step => 0.01, class: "pa2 input-reset ba bg-transparent hover-bg-black hover-white"%>
-            <%= f.submit class: "mt5 b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib" %>
+            <%= f.submit "Set a new, current price", class: "b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib" %>
         <% end %>
         </fieldset>
     <% end %>
@@ -39,16 +39,16 @@
 <fieldset class="ba b--transparent ph0 mh0">
 <legend class="f3 fw6 ph0 mh0">Wallet Stats</legend>
 <ul class="mt0 center list pl0 ml0 ba b--light-silver br3">
-    <li class="list ph3 pv2"><label class="fw6 lh-copy f5">Total Coins: <%= '%.4f' % @wallet.total_coins %></label> </li>
-    <li class="list ph3 pv2"><label class="fw6 lh-copy f5"><%= @wallet.net_adjusted >= 0 ? "USD made:" : "USD lost:" %></label>
-        <%= format_dollar_amount_of('%.2f' % @wallet.net_adjusted, "color") %> </li>
-    <li class="list ph3 pv2"><label class="fw6 lh-copy f5">Total USD spent on <%= @wallet.coin.name %>: <%= format_dollar_amount_of('%.2f' % @wallet.money_in, "color") %></label></li>
-    <li class="list ph3 pv2"><label class="fw6 lh-copy f5">Total USD value of wallet:  <%= format_dollar_amount_of('%.2f' % @wallet.net_unadjusted, "color") %><label></li>
+    <li class="ph3 pv2"><label class="fw6 lh-copy f5">Total Coins: <%= '%.4f' % @wallet.total_coins %></label> </li>
+    <li class="ph3 pv2"><label class="fw6 lh-copy f5"><%= @wallet.net_adjusted >= 0 ? "USD made:" : "USD lost:" %>
+        <%= format_dollar_amount_of('%.2f' % @wallet.net_adjusted, "color") %></label></li>
+    <li class="ph3 pv2"><label class="fw6 lh-copy f5">Total USD spent on <%= @wallet.coin.name %>: <%= format_dollar_amount_of('%.2f' % @wallet.money_in, "color") %></label></li>
+    <li class="ph3 pv2"><label class="fw6 lh-copy f5">Total USD value of wallet:  <%= format_dollar_amount_of('%.2f' % @wallet.net_unadjusted, "color") %><label></li>
 
 <% if @wallet.coin.last_value == (@wallet.get_current_price || Coin.find_by(name: @wallet.coin.name).last_value)%>
-    <label class="fw6 lh-copy f7"> Values calculated using <%= @wallet.coin.name %> price of $<%= '%.2f' % @wallet.coin.last_value %><br> found on <%= @wallet.coin.updated_at %></label>
+    <label class="fw1 lh-copy f7"> Values calculated using <%= @wallet.coin.name %> price of $<%= '%.2f' % @wallet.coin.last_value %><br> found on <%= @wallet.coin.updated_at %></label>
 <% else %>
-    <label class="fw6 lh-copy f7"> Values calculated using theoretical <%= @wallet.coin.name %> price of $<%= '%.2f' % @wallet.coin.last_value %> </label>
+    <label class="fw1 lh-copy f7"> Values calculated using theoretical <%= @wallet.coin.name %> price of $<%= '%.2f' % @wallet.coin.last_value %> </label>
 <% end %>
 </ul>
 </fieldset>
