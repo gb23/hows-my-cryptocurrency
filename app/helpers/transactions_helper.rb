@@ -1,6 +1,5 @@
 module TransactionsHelper
 
-
     def fill_nested_coin_name_for(transaction)
         if !transaction.coin_id.nil?
             "" 
