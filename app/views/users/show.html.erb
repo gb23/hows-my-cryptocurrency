@@ -1,24 +1,19 @@
 <main class="pa0 black-80">
-<div class="tc measure center">
-<fieldset class="ba b--transparent ph0 mh0">
+    <div class="tc measure center">
+        <fieldset class="ba b--transparent ph0 mh0">
             <% if current_user.money_in != 0.0 %>
                 <legend class="f3 fw6 ph0 mh0"><%= current_user.name %>'s Portfolio</legend>
                 <label class="fw6 lh-copy f6"><%= current_user.net_adjusted >= 0 ? "USD made" : "USD lost:" %></label>
                 <%= format_dollar_amount_of(current_user.net_adjusted, "color") %><br>
                 <label class="fw6 lh-copy f6">Total portfolio worth: </label>
                 <%= format_dollar_amount_of(current_user.net_unadjusted, "color")%><br><br>
-<h1 class="f3 fw6 mh0">Coin Distribution: </h1>
-
-
+                <h1 class="f3 fw6 mh0">Coin Distribution: </h1>
                 <ul class="center list pl0 ml0 mw5 ba b--light-silver br3">
-                <%= coin_distribution(current_user)%>
+                    <%= coin_distribution(current_user)%>
                 </ul>
-
             <% else %>
                 <label class="fw6 lh-copy f6">You have no current portfolio; create a transaction to get going!</label>
             <% end %>
-            <%# <%= button_to "View Wallets", user_wallets_path(current_user), :method => "get" %> 
-</fieldset>
-<%# <%= render partial: "transactions/add" %> 
-</div>
+        </fieldset>
+    </div>
 </main>

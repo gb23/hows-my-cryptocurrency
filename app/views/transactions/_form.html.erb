@@ -24,9 +24,6 @@
             <% end %>
             <input class="pa2 input-reset ba bg-transparent hover-bg-black hover-white" min="0" step="0.01" type="number" name="transaction[coin_attributes][last_value]" id="transaction_coin_attributes_last_value"  value=<%= fill_nested_coin_value_for(transaction) %>>
             
-            
-             
-            
             <% if coin_errors_for?(@transaction) %>
                 </div>
             <% end %>
