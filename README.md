@@ -4,8 +4,7 @@ This financial tracking app provides a database and web interface for users to:
 * Create an account which stores transaction data for cryptocurrency purchases.
 * Transaction calculations are performed using the cryptocurrency's trading price.
 * For transactions with Bitcoin, Ethereum, and Litecoin, calculations use realtime market pricing.
-* Calculated financial stats include, total portfolio worth, portfolio and wallet USD lost/gained, 
-*   total coins in wallet, total USD spent on wallet, total USD value of wallet.
+* Calculated financial stats include, total portfolio worth, portfolio and wallet USD lost/gained, total coins in wallet, total USD spent on wallet, total USD value of wallet.
 * User is also able to input a theoretical trading price and see how this effects output of calculations.
 * Web App analyzes coin popularity across all users and displays results.
 * Each user can **ONLY** add/edit/view/delete transactions of his/her own account.  
