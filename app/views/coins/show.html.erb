@@ -1,0 +1,14 @@
+<main class="pa0 black-80">
+  <div class="measure center">
+  <thead>
+        <tr class="stripe-dark">
+          <th class="fw6 tl pa3 bg-white">&nbsp&nbsp&nbspCoin Name</th>
+          <th class="fw6 tl pa3 bg-white">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</th>
+          <th class="fw6 tl pa3 bg-white">Number of Transactions</th>
+        </tr>
+      </thead>
+   <ol class="mr6 pl0 ml0 ba b--light-silver br3">
+    <%= render partial: "coins/most_transactions", collection: @most_transactions, as: :transaction, locals: {last_tx_name: @most_transactions.last[0] } %>
+   </ol>
+</div>
+</mainß>
