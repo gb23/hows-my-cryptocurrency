@@ -15,6 +15,7 @@
           <%= link_to  "Portfolio", user_path(current_user), class:"link dim white dib mr3"  %>
           <%= link_to "Transactions", user_transactions_path(current_user), class: "link dim white dib mr3"%>
           <%= link_to "Wallets", user_wallets_path(current_user), class: "link dim white dib mr3"%>
+          <%= link_to "Coin Stats", coins_most_transactions_path, class: "link dim white dib mr3"%>
           <span class="nav_link_right">
             <%= link_to("Sign Out", destroy_user_session_path, :method => 'delete', class: "link dim white dib") %>
           </span> 
@@ -24,22 +25,20 @@
       <%= render "devise/sessions/home" %>
     <% end %> 
 
-  <% if flash[:alert].nil?%>
-    <div class="main">
-  <% else %>
-    <div class="main-alert">
-  <% end %>
-
-    <div class="measure center tc">
-    <%= content_tag(:div, flash[:error], :id => "flash_error") if flash[:error] %>
-    <%= content_tag(:div, flash[:notice], :id => "flash_notice") if flash[:notice] %>
-    <%= content_tag(:div, flash[:alert], :id => "flash_alert") if flash[:alert] %>
-    </div>
-    </div>  
-    
-
+    <% if flash[:alert].nil?%>
+      <div class="main">
+    <% else %>
+      <div class="main-alert">
+    <% end %>
+        <div class="measure center tc">
+        <%= content_tag(:div, flash[:error], :id => "flash_error") if flash[:error] %>
+        <%= content_tag(:div, flash[:notice], :id => "flash_notice") if flash[:notice] %>
+        <%= content_tag(:div, flash[:alert], :id => "flash_alert") if flash[:alert] %>
+        </div>
+      </div>  
+      
     <%= yield %>
-    </section>
+
   </body>
 
 </html>
