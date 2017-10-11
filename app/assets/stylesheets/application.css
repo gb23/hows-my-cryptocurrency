@@ -34,7 +34,23 @@
    top: 6rem;
    color: rgb(243, 141, 165);
  }
-
+ .link_side{
+  position: fixed;
+  left: 10rem;
+  top: 10rem;
+ }
+.link_left{
+  position: relative;
+  left: 90%;
+}
+ .delete{
+  position: absolute;
+  right: 53%;
+ }
+.edit{
+  position: absolute;
+  right: 43%;
+}
  .lh3{
    line-height: 3;
  }
@@ -3513,4 +3529,3 @@
   .v-top-l { vertical-align: top; }
   .v-btm-l { vertical-align: bottom; }
  }
- 
