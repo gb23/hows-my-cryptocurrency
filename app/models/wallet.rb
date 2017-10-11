@@ -11,11 +11,9 @@ class Wallet < ApplicationRecord
     end
 
     def update_wallet_with_coin_value
-        #if self.coin.name == "Ethereum" || self.coin.name == "Bitcoin" || self.coin.name == "Litecoin" 
             self.calculate_unadjusted
             self.calculate_adjusted
             self.save
-        #end
     end
 
     def sum_coins(tx)
@@ -35,14 +33,14 @@ class Wallet < ApplicationRecord
     end
 
     def get_and_save_current_price 
-        if self.coin.name == "Ethereum" || self.coin.name == "Bitcoin" || self.coin.name == "Litecoin" 
+        if big_3?(self.coin)
             self.coin.last_value = CoinbaseApi.send("get_#{self.coin.name.downcase}_price")
             self.coin.save
         end
     end
 
     def get_current_price
-        if self.coin.name == "Ethereum" || self.coin.name == "Bitcoin" || self.coin.name == "Litecoin" 
+        if big_3?(self.coin)
             CoinbaseApi.send("get_#{self.coin.name.downcase}_price")
         end
     end
