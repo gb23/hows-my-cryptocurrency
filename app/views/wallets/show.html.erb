@@ -1,57 +1,68 @@
-<h1> <%= current_user.name %>'s <%= @wallet.name %> </h1>
+<main class="pa0 black-80">
+<div class="tc measure center">
 
-<fieldset>
-<legend><%= @wallet.coin.name %> value</legend>
-<%= @wallet.coin.name %> price: $<%= '%.2f' % @wallet.coin.last_value %>
-<% if @wallet.coin.name == "Ethereum" || @wallet.coin.name == "Bitcoin" || @wallet.coin.name == "Litecoin" %>
+<h1 class="f3 fw6 mh0"> <%= current_user.name %>'s <%= @wallet.name %> </h1>
+
+<fieldset class="ba b--transparent ph0 mh0">
+<legend class="f3 fw6 ph0 mh0"></legend>
+<label class="fw6 lh-copy f4"><%= @wallet.coin.name %> price: $</label> 
+<span class="fw6 lh-copy f4"><%= '%.2f' % @wallet.coin.last_value %></span>
+<% if big_3_coins_in?(@wallet) %>
     <% if @wallet.coin.last_value != @wallet.get_current_price%>
-        <%= link_to "Get current price", user_wallet_path(current_user, wallet_for(current_user, @wallet.name))%>
+        <%= link_to "Get current price", user_wallet_path(current_user, wallet_for(current_user, @wallet.name)), class: "link black-80 b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"%>
     <% end %>
 <% else %>
     <% if @wallet.coin.last_value != Coin.find_by(name: @wallet.coin.name).last_value %>
-        <%= link_to "Get current price", user_wallet_path(current_user, wallet_for(current_user, @wallet.name))%>
+        <%= link_to "Get current price", user_wallet_path(current_user, wallet_for(current_user, @wallet.name)), class: "link black-80 b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"%>
     <% else %>
-        <fieldset>
-        <legend>Set a new, current price</legend>
+        <fieldset class="ba b--transparent ph0 mh0">
+        <legend legend class="f3 fw6 ph0 mh0"> Set a new, current price</legend>
         <%= form_for Coin.find_by(name: @wallet.coin.name) do |f| %>
-            <%= f.label :last_value, "$"%>
-            <%= f.number_field :last_value%>
-            <%= f.submit %>
+            <%= f.label :last_value, "$", class: "fw6 lh-copy f6"%>
+            <%= f.number_field :last_value, :min => 0, :step => 0.01, class: "pa2 input-reset ba bg-transparent hover-bg-black hover-white"%>
+            <%= f.submit class: "mt5 b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib" %>
         <% end %>
         </fieldset>
     <% end %>
 <% end %>
-<%= form_for Coin.new, :url => url_for(:controller => 'wallets', :action => 'create') do |f| %>
-    <%= f.label :last_value, "Enter theoretical price: $"%>
-    <%= f.number_field :last_value %>
-    <%= f.hidden_field :name, value: @wallet.coin.name%>
-    <%= f.submit "Calculate With Theoretical Price"%>
-<% end %>
+<fieldset class="mt1 mb3 pl4 b--moon-silver">
+<legend class="f6">*OR* perform calculations using a price of your choosing</legend>
+    <%= form_for Coin.new, :url => url_for(:controller => 'wallets', :action => 'create') do |f| %>
+        <%= f.label :last_value, "Enter theoretical price: $", class: "lh3 fw6 f6" %>
+        <%= f.number_field :last_value, :min => 0, :step => 0.01, class: "pa2 input-reset ba bg-transparent hover-bg-black hover-white" %>
+        <%= f.hidden_field :name, value: @wallet.coin.name%>
+        <%= f.submit "Calculate With Theoretical Price", class: "b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"%>
+    <% end %>
+</fieldset>
 </fieldset>
 
-<fieldset>
-<legend>Wallet Stats</legend>
-<ul>
-    <li>Total Coins: <%= '%.4f' % @wallet.total_coins %> </li>
-    <li><label><%= @wallet.net_adjusted >= 0 ? "USD made:" : "USD lost:" %></label>
-        <%= '%.2f' % @wallet.net_adjusted %> </li>
-    <li>Total USD spent on <%= @wallet.coin.name %>: <%= '%.2f' % @wallet.money_in %></li>
-    <li>Total USD value of wallet:  <%= '%.2f' % @wallet.net_unadjusted %></li>
-</ul>
+<fieldset class="ba b--transparent ph0 mh0">
+<legend class="f3 fw6 ph0 mh0">Wallet Stats</legend>
+<ul class="mt0 center list pl0 ml0 ba b--light-silver br3">
+    <li class="list ph3 pv2"><label class="fw6 lh-copy f5">Total Coins: <%= '%.4f' % @wallet.total_coins %></label> </li>
+    <li class="list ph3 pv2"><label class="fw6 lh-copy f5"><%= @wallet.net_adjusted >= 0 ? "USD made:" : "USD lost:" %></label>
+        <%= format_dollar_amount_of('%.2f' % @wallet.net_adjusted, "color") %> </li>
+    <li class="list ph3 pv2"><label class="fw6 lh-copy f5">Total USD spent on <%= @wallet.coin.name %>: <%= format_dollar_amount_of('%.2f' % @wallet.money_in, "color") %></label></li>
+    <li class="list ph3 pv2"><label class="fw6 lh-copy f5">Total USD value of wallet:  <%= format_dollar_amount_of('%.2f' % @wallet.net_unadjusted, "color") %><label></li>
+
 <% if @wallet.coin.last_value == (@wallet.get_current_price || Coin.find_by(name: @wallet.coin.name).last_value)%>
-    <p> Values calculated using <%= @wallet.coin.name %> price of $<%= '%.2f' % @wallet.coin.last_value %> found on <%= @wallet.coin.updated_at %></p>
+    <label class="fw6 lh-copy f7"> Values calculated using <%= @wallet.coin.name %> price of $<%= '%.2f' % @wallet.coin.last_value %><br> found on <%= @wallet.coin.updated_at %></label>
 <% else %>
-    <p> Values calculated using theoretical <%= @wallet.coin.name %> price of $<%= '%.2f' % @wallet.coin.last_value %> </p>
+    <label class="fw6 lh-copy f7"> Values calculated using theoretical <%= @wallet.coin.name %> price of $<%= '%.2f' % @wallet.coin.last_value %> </label>
 <% end %>
+</ul>
 </fieldset>
 
 
 <% if @wallet.coin.last_value == (@wallet.get_current_price || Coin.find_by(name: @wallet.coin.name).last_value)%>
     <%= render partial: "transactions/add" %>
-    <fieldset>
-    <legend><%= @wallet.coin.name %> Transaction History</legend>
-    <ol>
+    <fieldset class="ba b--transparent ph0 mh0">
+    <legend class="f4 fw6 ph0 mh0"><%= @wallet.coin.name %> Transaction History</legend>
+    <ol class="mt0 tj pl0 ml0 ba b--light-silver br3">
     <%= render partial: "transactions/list", collection: Transaction.where(["user_id = ? and coin_id = ?", current_user.id, @wallet.coin_id]), as: :transaction, locals: {show_link_to_more: true} %>
     </ol>
     </fieldset>
 <% end %>
+
+</div>
+</main>
