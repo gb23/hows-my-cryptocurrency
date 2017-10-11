@@ -1,19 +1,27 @@
-<h1> <%= current_user.name %>'s Wallets </h1>
+<main class="pa0 black-80">
+<div class="tc measure center">
 
-<ul>
+
+<h1 class="f3 fw6 mh0"> <%= current_user.name %>'s Wallets </h1>
+
+<ul class="center list pl0 ml0 mw5 ba b--light-silver br3">
     <% current_user.wallets.each do |wallet| %>
-        <li>
-            <fieldset>
+        <%= wallet_list_item_open(current_user, wallet) %>
+            <fieldset class="ba b--transparent ph0 mh0">
             <% if !empty?(wallet) %>
-                <legend><%=link_to wallet.name , user_wallet_path(current_user, wallet)%></legend>
-                Total Coins: <%= '%.4f' % wallet.total_coins %> <br>
-                <label><%= wallet.net_adjusted >= 0 ? "USD made" : "USD lost" %></label>
-                <%= '%.2f' % wallet.net_adjusted %><br>
+                <legend class="f3 fw6 ph0 mh0"><%=link_to wallet.name , user_wallet_path(current_user, wallet), class: "link black-80 b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"%></legend>
+                <label class="fw6 lh-copy f6">Total Coins:</label>
+                <%= '%.4f' % wallet.total_coins %> <br>
+                <label class="fw6 lh-copy f6"><%= wallet.net_adjusted >= 0 ? "USD made" : "USD lost" %></label>
+                <%= format_dollar_amount_of('%.2f' % wallet.net_adjusted, "color") %><br>
             <% else %>
-                <legend><%=wallet.name %></legend>
-                Wallet Empty
+                <legend class="fw6 ph0 mh0 gray bg-transparent dib"><%=wallet.name %></legend>
+                <label class="gray fw6 lh-copy f6">Wallet Empty</label>
             <% end %>
             </fieldset>
         </li>
     <% end %>
 </ul>
+
+</div>
+</main>
