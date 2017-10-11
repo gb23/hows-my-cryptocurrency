@@ -1,9 +1,14 @@
+<main class="pa0 black-80">
+  <div class="measure center">
+
 <%= render partial: "transactions/add" %>
-<fieldset>
-    <legend><%= current_user.name %>'s Transaction History</legend>
+<fieldset class="ba b--transparent ph0 mh0">
+    <legend class="f4 fw6 ph0 mh0"><%= current_user.name %>'s Transaction History</legend>
     <% if current_user.transactions.empty?%>
-        <p>You have no transaction history; create a transaction to get going!</p>
+        <label class="fw6 lh-copy f6">You have no transaction history; create a transaction to get going!</label>
     <% else %>
-        <ol><%= render partial: "transactions/list", collection: @transactions, as: :transaction, locals: {show_link_to_more: true} %></ol>
+        <ol class="mr6 pl0 ml0 ba b--light-silver br3"><%= render partial: "transactions/list", collection: @transactions, as: :transaction, locals: {show_link_to_more: true} %></ol>
     <% end %>
 </fieldset>
+  </div>
+</main>
