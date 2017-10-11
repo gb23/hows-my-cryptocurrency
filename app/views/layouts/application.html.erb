@@ -3,13 +3,14 @@
   <head>
     <title>Cryptocurrency Analysis</title>
     <%= csrf_meta_tags %>
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body class="sans-serif">  
     <% if signed_in? %>
-      <header class="sans-serif bg-black-90 fixed top-0 w-100 ph3 pv3 pv4-ns ph4-m ph5-l">
+      <header class="z-1 sans-serif bg-black-90 fixed top-0 w-100 ph3 pv3 pv4-ns ph4-m ph5-l">
         <nav class="f6 fw6 ttu tracked">
           <%= link_to  "Portfolio", user_path(current_user), class:"link dim white dib mr3"  %>
           <%= link_to "Transactions", user_transactions_path(current_user), class: "link dim white dib mr3"%>
