@@ -18,12 +18,9 @@ module ApplicationHelper
         apply_color(amount, display_amount, sign)
     end
 
-    def format_dollar_amount_of (amount, color) 
-        
+    def format_dollar_amount_of (amount, color)      
         amount = string_to_float(amount)
-        
         display_amount = add_comma_to_number(amount)
-
         if color.empty?
             "<span> $#{display_amount} </span>".html_safe 
         else
@@ -32,7 +29,7 @@ module ApplicationHelper
     end
 
     def string_to_float(amount)
-        amount.to_f if amount.instance_of?(String)
+        amount.instance_of?(String) ? amount.to_f : amount
     end
 
     def add_comma_to_number(amount)
