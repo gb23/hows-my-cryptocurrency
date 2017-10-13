@@ -14,8 +14,7 @@ module ApplicationHelper
     def percent_format(amount)
         amount = string_to_float(amount)
         sign = find_sign(amount)
-        display_amount = add_comma_to_number(amount)
-        display_amount += "%"
+        display_amount = add_comma_to_number(amount) + "%"
         apply_color(amount, display_amount, sign)
     end
 
