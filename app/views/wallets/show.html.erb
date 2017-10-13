@@ -41,10 +41,10 @@
             <legend class="f3 fw6 ph0 mh0">Wallet Stats</legend>
             <ul class="mt0 center list pl0 ml0 ba b--light-silver br3">
                 <li class="ph3 pv2"><label class="fw6 lh-copy f5">Total Coins: <%= '%.4f' % @wallet.total_coins %></label> </li>
-                <li class="ph3 pv2"><label class="fw6 lh-copy f5"><%= @wallet.net_adjusted >= 0 ? "USD made:" : "USD lost:" %>
-                    <%= format_dollar_amount_of('%.2f' % @wallet.net_adjusted, "color") %></label></li>
                 <li class="ph3 pv2"><label class="fw6 lh-copy f5">Total USD spent on <%= @wallet.coin.name %>: <%= format_dollar_amount_of('%.2f' % @wallet.money_in, "") %></label></li>
                 <li class="ph3 pv2"><label class="fw6 lh-copy f5">Total USD value of wallet:  <%= format_dollar_amount_of('%.2f' % @wallet.net_unadjusted, "color") %><label></li>
+                <li class="ph3 pv2"><label class="fw6 lh-copy f5"><%= @wallet.net_adjusted >= 0 ? "USD made:" : "USD lost:" %>
+                    <%= format_dollar_amount_of('%.2f' % @wallet.net_adjusted, "color") %></label></li>   
                 <li class="ph3 pv2"><label class="fw6 lh-copy f5">Percent Change:  <%= percent_format('%.2f' % (@wallet.net_adjusted/@wallet.money_in * 100)) %><label></li>
             <% if @wallet.coin.last_value == (@wallet.get_current_price || Coin.find_by(name: @wallet.coin.name).last_value)%>
                 <label class="fw1 lh-copy f7"> Values calculated using <%= @wallet.coin.name %> price of $<%= '%.2f' % @wallet.coin.last_value %><br>(<%= @wallet.coin.updated_at %>)</label>
