@@ -64,10 +64,6 @@ module ApplicationHelper
     end
 
     def find_sign(amount)
-        if amount >= 0
-            '+'
-        else
-            '-'
-        end
+        '+'  if amount > 0
     end
 end
