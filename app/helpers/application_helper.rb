@@ -11,11 +11,19 @@ module ApplicationHelper
         htm.html_safe 
     end
 
+    def percent_format(amount)
+        amount = string_to_float(amount)
+        sign = find_sign(amount)
+        display_amount = add_comma_to_number(amount)
+        apply_color(amount, display_amount, sign)
+    end
+
     def format_dollar_amount_of (amount, color) 
-        if amount.instance_of?(String)
-            amount = amount.to_f
-        end
-        display_amount = number_with_delimiter(('%.2f' % amount), :delimiter => ',')
+        
+        amount = string_to_float(amount)
+        
+        display_amount = add_comma_to_number(amount)
+
         if color.empty?
             "<span> $#{display_amount} </span>".html_safe 
         else
@@ -23,11 +31,19 @@ module ApplicationHelper
         end
     end
 
-    def apply_color(amount, display_amount)
+    def string_to_float(amount)
+        amount.to_f if amount.instance_of?(String)
+    end
+
+    def add_comma_to_number(amount)
+        number_with_delimiter(('%.2f' % amount), :delimiter => ',')
+    end
+
+    def apply_color(amount, display_amount, sign='$')
         if amount > 0
-            "<span class='green animate-reveal animate-first'> $#{display_amount} </span>".html_safe 
+            "<span class='green animate-reveal animate-first'> #{sign}#{display_amount} </span>".html_safe 
         elsif amount < 0
-            "<span class='red animate-reveal animate-first'> $#{display_amount} </span>".html_safe 
+            "<span class='red animate-reveal animate-first'> #{sign}#{display_amount} </span>".html_safe 
         else
             "<span> $#{display_amount} </span>".html_safe 
         end
@@ -45,5 +61,13 @@ module ApplicationHelper
 
     def list_item_close(params)
         "</li>".html_safe if params[:action] != "show" || params[:controller] != "transactions"
+    end
+
+    def find_sign(amount)
+        if amount >= 0
+            '+'
+        else
+            '-'
+        end
     end
 end
