@@ -15,6 +15,7 @@ module ApplicationHelper
         amount = string_to_float(amount)
         sign = find_sign(amount)
         display_amount = add_comma_to_number(amount)
+        display_amount += "%"
         apply_color(amount, display_amount, sign)
     end
 
