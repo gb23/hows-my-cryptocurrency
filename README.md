@@ -21,11 +21,11 @@ This app was built with Ruby, extended with [Rake tasks](https://github.com/ruby
 ## Usage
 Fork this repository to your own account
 
-https://github.com/gb23/hows-my-cryptocurrency
+```https://github.com/gb23/hows-my-cryptocurrency```
 
 Then clone the repository to your local environment
 
-git@github.com:gb23/hows-my-cryptocurrency.git
+```git@github.com:gb23/hows-my-cryptocurrency.git```
 
 After forking and cloning the repo, run ```bundle install``` to install Ruby gem dependencies.
 
