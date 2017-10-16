@@ -19,8 +19,17 @@ This financial tracking app provides a database and web interface for users to:
 This app was built with Ruby, extended with [Rake tasks](https://github.com/ruby/rake) for working with an SQL database using Rails,[ActiveRecord ORM](https://github.com/rails/rails/tree/master/activerecord). This app uses the [Coinbase API](https://developers.coinbase.com/api/v2) to get realtime market data for Ethereum, Bitcoin, and Litecoin.  Styling structure was provided by [Tachyons](https://tachyons.io). Omniauth login support is provided with [Omniauth](https://github.com/omniauth/omniauth).
 
 ## Usage
+Fork this repository to your own account
 
-After checking out the repo, run ```bundle install``` to install Ruby gem dependencies.
+https://github.com/gb23/hows-my-cryptocurrency
+
+Then clone the repository to your local environment
+
+git@github.com:gb23/hows-my-cryptocurrency.git
+
+After forking and cloning the repo, run ```bundle install``` to install Ruby gem dependencies.
+
+Then setup the database with ```rake db:migrate```.
 
 You can start one of Rails supported servers using the ```rails s``` command and navigate to `localhost:3000` in your browser.
 

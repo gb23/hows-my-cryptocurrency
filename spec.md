@@ -29,7 +29,7 @@ coins model object, most_transactions class method name, URL: /coins/most_transa
 - [x] Include nested resource "new" form 
 (URL e.g. users/1/transactions/new)
 - [x] Include form display of validation errors
-log-in, and create/edit transaction data display validation errors
+log-in, and create/edit transaction data display validation errors, ex: users/1/transactions/new
 
 Confirm:
 - [x] The application is pretty DRY
