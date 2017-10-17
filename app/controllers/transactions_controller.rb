@@ -44,7 +44,11 @@ class TransactionsController < ApplicationController
     def destroy
         wallet = @transaction.user.wallets.find_by(name: @transaction.coin.name)
         coin_id = @transaction.coin_id
-       
+        negative_transaction = Transaction.new(user_id: current_user.id, coin_id: coin_id,
+            money_in: (@transaction.money_in * -1), price_per_coin: @transaction.price_per_coin, 
+            quantity: (@transaction.quantity * -1))
+
+        wallet.update_wallet_with(negative_transaction)
         @transaction.destroy 
 
         #if user has no transactions with coin_id, delete wallet
