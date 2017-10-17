@@ -42,7 +42,15 @@ class TransactionsController < ApplicationController
     end
 
     def destroy
+        wallet = @transaction.user.wallets.find_by(name: @transaction.coin.name)
+        coin_id = @transaction.coin_id
+       
         @transaction.destroy 
+
+        #if user has no transactions with coin_id, delete wallet
+        if current_user.transactions.find_by(coin_id: coin_id).nil?
+            wallet.destroy
+        end
         redirect_to user_transactions_path(current_user), notice: "Transaction has been deleted!"
     end
 
