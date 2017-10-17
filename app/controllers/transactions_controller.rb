@@ -1,22 +1,45 @@
 class TransactionsController < ApplicationController
     before_action :find_tx, only: [:show, :edit, :destroy, :update]
 
+    def index
+        @transactions = current_user.transactions
+    end
+
     def new
         @transaction = Transaction.new
         @transaction.coin = Coin.new
     end
 
-    def index
-        @transactions = current_user.transactions
+    def create        
+        @transaction = current_user.transactions.build(transaction_params)
+        @transaction.user_input = params[:transaction]
+        
+        current_user.wallets.build(name: @transaction.coin.name) if @transaction.user_type_in_name_and_no_wallet_exits_yet(current_user)
+        
+        if @transaction.valid? && @transaction.coin.valid? 
+
+            @transaction.save_coin_and_wallet_if_user_typed_in(current_user)
+
+            @transaction.save
+            redirect_to user_transactions_path(current_user), notice: "Transaction saved!"
+        else
+            @transaction.coin = Coin.new(name: @transaction.typed_in_coin_name, last_value: @transaction.typed_in_last_value) if @transaction.did_user_not_select_name?
+            
+            @transaction.run_validation_if_typed_in_name 
+
+            render 'transactions/new'
+        end
+    end
+
+    def show
+        not_valid_transaction("view") if !authenticate(@transaction)
     end
 
     def edit
         not_valid_transaction("edit") if !authenticate(@transaction)
     end
 
-    def show
-        not_valid_transaction("view") if !authenticate(@transaction)
-    end
+  
 
     def update
         @transaction.user_input = params[:transaction]
@@ -57,26 +80,7 @@ class TransactionsController < ApplicationController
         redirect_to user_transactions_path(current_user), notice: "Transaction has been deleted!"
     end
 
-    def create        
-        @transaction = current_user.transactions.build(transaction_params)
-        @transaction.user_input = params[:transaction]
-        
-        current_user.wallets.build(name: @transaction.coin.name) if @transaction.user_type_in_name_and_no_wallet_exits_yet(current_user)
-        
-        if @transaction.valid? && @transaction.coin.valid? 
-
-            @transaction.save_coin_and_wallet_if_user_typed_in(current_user)
-
-            @transaction.save
-            redirect_to user_transactions_path(current_user), notice: "Transaction saved!"
-        else
-            @transaction.coin = Coin.new(name: @transaction.typed_in_coin_name, last_value: @transaction.typed_in_last_value) if @transaction.did_user_not_select_name?
-            
-            @transaction.run_validation_if_typed_in_name 
-
-            render 'transactions/new'
-        end
-    end
+   
 
     private
 
@@ -85,7 +89,7 @@ class TransactionsController < ApplicationController
     end
 
     def transaction_params
-        params.require(:transaction).permit(:money_in, :price_per_coin, :coin_id, coin_attributes: [:name, :last_value, :id]) 
+        params.require(:transaction).permit(:money_in, :price_per_coin, :coin_id, :comment, coin_attributes: [:name, :last_value, :id]) 
     end
 
     def authenticate(transaction)
