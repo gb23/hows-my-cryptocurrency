@@ -30,25 +30,13 @@ class TransactionsController < ApplicationController
         current_user.wallets.build(name: @transaction.coin.name) if @transaction.user_type_in_name_and_no_wallet_exits_yet(current_user)
 
         if @transaction.valid? && @transaction.coin.valid? 
-            if !@transaction.did_user_not_type_in_name?
-                if @transaction.wallet_already_exists_for?(current_user, @transaction.typed_in_coin_name)
-                    @transaction.coin = @transaction.wallet_already_exists_for?(current_user, @transaction.typed_in_coin_name)
-                    @transaction.coin.save
-                else
-                    @transaction.coin.save
-                    current_user.wallets.last.coin =  @transaction.coin
-                    current_user.wallets.last.save
-                end
-                @transaction.coin_id = @transaction.coin.id
-            end
+
+            @transaction.save_coin_possibly_wallet_if_user_typed_in_name(current_user)
+
             @transaction.save
             redirect_to user_transactions_path(current_user), notice: "Transaction saved!"
         else
-            if !@transaction.did_user_not_type_in_name?
-                #only want the last_value of 0 error if a coin was typed in. 
-                #by seeing if coin is valid (below) with 0 value will cause error to show
-                @transaction.coin.valid? 
-            end
+            @transaction.run_validation_if_typed_in_name
             render 'transactions/edit'
         end
     end
@@ -65,25 +53,16 @@ class TransactionsController < ApplicationController
         current_user.wallets.build(name: @transaction.coin.name) if @transaction.user_type_in_name_and_no_wallet_exits_yet(current_user)
         
         if @transaction.valid? && @transaction.coin.valid? 
-            if !@transaction.did_user_not_type_in_name?
-                @transaction.coin.save
-                @transaction.coin_id = @transaction.coin.id
 
-                wallet = @transaction.wallet_last_or_find_for(current_user)
-           
-                wallet.coin =  @transaction.coin
-                wallet.save
-            end
+            @transaction.save_coin_and_wallet_if_user_typed_in(current_user)
+
             @transaction.save
             redirect_to user_transactions_path(current_user), notice: "Transaction saved!"
         else
             @transaction.coin = Coin.new(name: @transaction.typed_in_coin_name, last_value: @transaction.typed_in_last_value) if @transaction.did_user_not_select_name?
-    
-            if !@transaction.did_user_not_type_in_name?
-                #only want the last_value of 0 error if a coin wasn't typed in. 
-                #by seeing if coin is valid (below) with 0 value will cause error to show
-                @transaction.coin.valid? 
-            end
+            
+            @transaction.run_validation_if_typed_in_name 
+
             render 'transactions/new'
         end
     end

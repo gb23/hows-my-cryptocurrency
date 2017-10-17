@@ -85,6 +85,41 @@ class Transaction < ApplicationRecord
         end
     end
 
+    def run_validation_if_typed_in_name 
+        if !self.did_user_not_type_in_name?
+            #only want the last_value of 0 error if a coin was typed in. 
+            #by seeing if coin is valid (below) with 0 value will cause error to show
+            self.coin.valid? 
+        end
+    end
+
+    def save_coin_possibly_wallet_if_user_typed_in_name(current_user)
+        if !self.did_user_not_type_in_name?
+            if self.wallet_already_exists_for?(current_user, self.typed_in_coin_name)
+                self.coin = self.wallet_already_exists_for?(current_user, self.typed_in_coin_name)
+                self.coin.save
+            else
+                self.coin.save
+                current_user.wallets.last.coin =  self.coin
+                current_user.wallets.last.save
+            end
+            self.coin_id = self.coin.id
+        end
+        
+    end
+
+    def save_coin_and_wallet_if_user_typed_in(current_user)
+        if !self.did_user_not_type_in_name?
+            self.coin.save
+            self.coin_id = self.coin.id
+
+            wallet = self.wallet_last_or_find_for(current_user)
+        
+            wallet.coin =  self.coin
+            wallet.save
+        end
+    end
+
     private
 
     def tell_user
