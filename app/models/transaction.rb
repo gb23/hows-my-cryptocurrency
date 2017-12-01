@@ -1,4 +1,5 @@
 class Transaction < ApplicationRecord
+    has_many :notes
     belongs_to :coin, optional: true
     belongs_to :user
 
