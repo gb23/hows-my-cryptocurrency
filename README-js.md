@@ -16,6 +16,9 @@
 
  6. Must translate the JSON responses into Javascript Model Objects. The Model Objects must have at least one method on the prototype. Formatters work really well for this. Borrowing from the previous example, instead of plainly taking the JSON response of the newly created comment and appending it to the DOM, you would create a Comment prototype object and add a function to that prototype to perhaps concatenate (format) the comments authors first and last name. You would then use the object to append the comment information to the DOM.
 =from requirement 5, the response is translated into a javascript model object... formatted..
+So will have a transaction prototype object
+
+Add transaction has many notes.  A note will have text, and it will have a date
 ## Instructions
 
 1. Make the changes to your existing Rails assessment repo.
