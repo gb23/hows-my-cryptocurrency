@@ -10,11 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171008210740) do
+ActiveRecord::Schema.define(version: 20171201184816) do
 
   create_table "coins", force: :cascade do |t|
     t.string "name"
     t.float "last_value", default: 0.0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "notes", force: :cascade do |t|
+    t.integer "transaction_id"
+    t.text "comment"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
