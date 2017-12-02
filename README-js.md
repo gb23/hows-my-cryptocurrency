@@ -1,7 +1,7 @@
 ## Requirements
 
  1. Must render at least one index page (index resource - 'list of things') via jQuery and an Active Model Serialization JSON Backend. For example, in a blog domain with users and posts, you might display the index of the users posts on the users show page, fetching the posts via an AJAX GET request, with the backend rendering the posts in JSON format, and then appending the posts to the page.
- =users show page (portfolio page) will be able to display index of users transactions
+ =wallet show page (ex: ethereum wallet) will be able to display index of transactions
  render transactions in backend in JSON format, then append to transactions page
 
  2. Must render at least one show page (show resource - 'one specific thing') via jQuery and an Active Model Serialization JSON Backend. For example, in the blog domain, you might allow a user to sift through the posts by clicking a 'Next' button on the posts show page, with the next post being fetched and rendered via JQuery/AJAX.
