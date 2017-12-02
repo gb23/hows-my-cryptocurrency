@@ -2,8 +2,20 @@ class TransactionsController < ApplicationController
     before_action :find_tx, only: [:show, :edit, :destroy, :update]
 
     def index
-        @transactions = current_user.transactions
-        byebug
+        byebug;
+        #if tx has a coin_id, @transactions will be more selectibe query
+        #coming from getJSON: <ActionController::Parameters {"coin_id"=>"1", "controller"=>"transactions", "action"=>"index", "user_id"=>"2"} permitted: false>
+        if params[:coin_id].nil?
+            @transactions = current_user.transactions
+        else
+            @transactions = Transaction.where(["user_id = ? and coin_id = ?", params[:user_id], params[:coin_id]])
+        end
+        
+        respond_to do |f|
+            f.html { render :index }
+            f.json { render json: @transactions }
+        end
+        
     end
 
     def new
