@@ -54,14 +54,19 @@
             </ul>
         </fieldset>
 
-        <% if @wallet.coin.last_value == (@wallet.get_current_price || Coin.find_by(name: @wallet.coin.name).last_value)%>
+        <% if @wallet.coin.last_value == (@wallet.get_current_price) || @wallet.coin.last_value == (Coin.find_by(name: @wallet.coin.name).last_value)%>
             <%= render partial: "transactions/add" %>
-            <fieldset class="ba b--transparent ph0 mh0">
-                <legend class="f4 fw6 ph0 mh0"><%= @wallet.coin.name %> Transaction History</legend>
-                <ol class="mt0 tj pl0 ml0 ba b--light-silver br3">
-                <%= render partial: "transactions/list", collection: Transaction.where(["user_id = ? and coin_id = ?", current_user.id, @wallet.coin_id]), as: :transaction, locals: {show_link_to_more: true} %>
+            <%# <fieldset class="ba b--transparent ph0 mh0"> %>
+                <%# <legend class="f4 fw6 ph0 mh0"> List <%= @wallet.coin.name %> <%# Transaction History</legend> %>
+                <a href="#" id="list_txs_in_wallet" data-userid="<%=current_user.id%>" data-coinid="<%=@wallet.coin.id%>" class="link black-80 b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib">List <%= @wallet.coin.name %> Transaction History</a>
+                <ol id="coin_list_in_wallet" class="mt0 tj pl0 ml0 ba b--light-silver br3">
+                
+                
                 </ol>
-            </fieldset>
+                <%# <ol class="mt0 tj pl0 ml0 ba b--light-silver br3">
+                <%= render partial: "transactions/list", collection: Transaction.where(["user_id = ? and coin_id = ?", current_user.id, @wallet.coin_id]), as: :transaction, locals: {show_link_to_more: true} %>
+               <%# </ol> %>
+            <%# </fieldset> %>
         <% end %>
     </div>
 </main>
