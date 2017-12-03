@@ -21,7 +21,7 @@ ActiveRecord::Schema.define(version: 20171201184816) do
 
   create_table "notes", force: :cascade do |t|
     t.integer "transaction_id"
-    t.text "comment"
+    t.string "comment"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
