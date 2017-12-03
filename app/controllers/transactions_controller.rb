@@ -2,7 +2,6 @@ class TransactionsController < ApplicationController
     before_action :find_tx, only: [:show, :edit, :destroy, :update]
 
     def index
-        byebug;
         #if tx has a coin_id, @transactions will be more selectibe query
         #coming from getJSON: <ActionController::Parameters {"coin_id"=>"1", "controller"=>"transactions", "action"=>"index", "user_id"=>"2"} permitted: false>
         if params[:coin_id].nil?
