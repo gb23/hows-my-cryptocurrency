@@ -2,7 +2,7 @@
   <div class="measure center">
     <%= render partial: "transactions/add" %>
     <fieldset class="ba b--transparent ph0 mh0">
-        <legend class="f4 fw6 ph0 mh0"><%= current_user.name %>'s Transaction History</legend>
+        <legend class="pl4 f4 fw6 mh0"><%= current_user.name %>'s Transaction History</legend>
         <% if current_user.transactions.empty?%>
             <label class="fw6 lh-copy f6">You have no transaction history; create a transaction to get going!</label>
         <% else %>
