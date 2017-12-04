@@ -14,7 +14,7 @@ $(function() {
         const image = $(this).data("image");
         const $thisIcon = $(this)
         $.getJSON(`/users/${user_id}/transactions/${tx_id}`,function(APIresponse){
-            changeView(image, $thisIcon, APIresponse, tx_id); 
+            changeView(image, $thisIcon, APIresponse, tx_id, user_id); 
         }); 
    });
 });
@@ -26,25 +26,36 @@ function showTxsWithTemplate(txs) {
     const txList = template(txs);
     $("#transactions_in_wallet").html(txList);
 }
-function showExtraTxDataTemplate(txAdditionalInfo, tx_id) {
+function showExtraTxDataTemplate(txAdditionalInfo, tx_id, user_id) {
     //insert-show-more-<%=transaction.id%>
     const src = $("#transaction-show-template").html();
     
     const template = Handlebars.compile(src);
     const txExtra = template(txAdditionalInfo);
     $(`#insert-show-more-${tx_id}`).html(txExtra);
+
+    const srcForMod = $("#edit-delete-icons-template").html();
+    const templateForMod = Handlebars.compile(srcForMod);
+    const deleteURL = `/users/${user_id}/transactions/${tx_id}`
+    const editURL = `/users/${user_id}/transactions/${tx_id}/edit`
+    const modFeature = templateForMod({deleteURL: deleteURL, editURL: editURL });
+    // $(`#insert-edit-delete-${tx_id}`).html(modFeature);
+    //<div id="insert-edit-delte-<%=transaction.id%>"></div>
+    $(`#insert-show-more-${tx_id}`).append(modFeature);
+    $(`#insert-show-more-${tx_id}`).addClass("pb4");
 }
 function changeListLink(coinName){
     $("#list_txs_in_wallet").replaceWith(`<p id="list_txs_in_wallet" class="mt0 black-80 b ph3 pv2 ba f6 dib">${coinName} Transaction History</p>`)
 }
 
-function changeView(displayedImage, $icon, APIresponse, tx_id) {
+function changeView(displayedImage, $icon, APIresponse, tx_id, user_id) {
     if (displayedImage === "ellipses"){
-        showExtraTxDataTemplate(APIresponse, tx_id);
+        showExtraTxDataTemplate(APIresponse, tx_id, user_id);
         changeToDownArrowIcon($icon);
        
     } else if (displayedImage === "downArrow") {
         $(`#insert-show-more-${tx_id}`).empty();
+        $(`#insert-show-more-${tx_id}`).removeClass("pb4");
         changetoEllipsesIcon($icon);
     }
 }
