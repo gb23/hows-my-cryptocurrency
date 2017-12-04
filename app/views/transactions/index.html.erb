@@ -12,17 +12,28 @@
   </div>
 </main>
     <script id="transaction-show-template" type="text/x-handlebars-template">
-                
-           <div class='f7 ml2-l ml2-ns'>Transaction ID: {{id}}</div>
-           <div class='f7 ml2-l ml2-ns'>Created At: {{created_at}}</div>
-           <div class='f7 ml2-l ml2-ns'>Updated At: {{updated_at}}</div><br/>
+           <div class='f7 ml5-ns'>Transaction ID: {{id}}</div>
+           <div class='f7 ml5-ns'>Created At: {{created_at}}</div>
+           <div class='f7 ml5-ns'>Updated At: {{updated_at}}</div><br/>
             <%# :id, :coin_id, :money_in, :price_per_coin, :quantity, :created_at, :updated_at %>
-            <ul class='f7 pl2'>
+            <ul class='pl0 f7'>
             {{#each notes}}
-                <li><p>Comment on {{updated_at}}:</p> 
-                    <p>{{comment}}</p>
+                <li class='ml5-ns'><p>Comment on {{updated_at}}:</p> 
+                    <p class='pr0-ns pr5' >{{comment}}</p>
                 </li>
             {{/each}}
             </ul>
-        <%# {{> notesPartial notes}} %>
+    </script>
+    <script id="edit-delete-icons-template" type="text/x-handlebars-template">
+
+        <a data-confirm="Are you sure you'd like to delete this transaction?" class="pr0-ns pr5 delete link black-80"
+        rel="nofollow" data-method="delete" href="{{deleteURL}}">
+            <i class="fa fa-trash-o">Delete</i>
+        </a>
+    
+
+        <a class="edit link black-80" href="{{editURL}}">
+             <i class="fa fa-pencil">Edit</i>
+        </a>
+    
     </script>
