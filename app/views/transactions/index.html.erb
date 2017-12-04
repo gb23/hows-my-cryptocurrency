@@ -2,12 +2,27 @@
   <div class="measure center">
     <%= render partial: "transactions/add" %>
     <fieldset class="ba b--transparent ph0 mh0">
-        <legend class="pl4 f4 fw6 mh0"><%= current_user.name %>'s Transaction History</legend>
+        <legend class="tc f4 fw6 mh0"><%= current_user.name %>'s Transaction History</legend>
         <% if current_user.transactions.empty?%>
             <label class="fw6 lh-copy f6">You have no transaction history; create a transaction to get going!</label>
         <% else %>
-            <ol class="mr6 pl0 ml0 ba b--light-silver br3"><%= render partial: "transactions/list", collection: @transactions, as: :transaction, locals: {show_link_to_more: true} %></ol>
+            <ol class="pl0 ml0 ba b--light-silver br3"><%= render partial: "transactions/list", collection: @transactions, as: :transaction, locals: {show_link_to_more: true} %></ol>
         <% end %>
     </fieldset>
   </div>
 </main>
+    <script id="transaction-show-template" type="text/x-handlebars-template">
+                
+           <div class='f7 ml2-l ml2-ns'>Transaction ID: {{id}}</div>
+           <div class='f7 ml2-l ml2-ns'>Created At: {{created_at}}</div>
+           <div class='f7 ml2-l ml2-ns'>Updated At: {{updated_at}}</div><br/>
+            <%# :id, :coin_id, :money_in, :price_per_coin, :quantity, :created_at, :updated_at %>
+            <ul class='f7 pl2'>
+            {{#each notes}}
+                <li><p>Comment on {{updated_at}}:</p> 
+                    <p>{{comment}}</p>
+                </li>
+            {{/each}}
+            </ul>
+        <%# {{> notesPartial notes}} %>
+    </script>
