@@ -4,7 +4,7 @@
  =wallet show page (ex: ethereum wallet) will be able to display index of transactions
  render transactions in backend in JSON format, then append to transactions page
 
- 2. Must render at least one show page (show resource - 'one specific thing') via jQuery and an Active Model Serialization JSON Backend. For example, in the blog domain, you might allow a user to sift through the posts by clicking a 'Next' button on the posts show page, with the next post being fetched and rendered via JQuery/AJAX.
+ X2. Must render at least one show page (show resource - 'one specific thing') via jQuery and an Active Model Serialization JSON Backend. For example, in the blog domain, you might allow a user to sift through the posts by clicking a 'Next' button on the posts show page, with the next post being fetched and rendered via JQuery/AJAX.
  =transactions index page will have ability to display an individual transaction show resource (if you click on 'i'
  you will be given the show view) (next, back to go through show views?)
 
