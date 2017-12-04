@@ -1,11 +1,24 @@
-<%= list_item_open(params, transaction) %>
-    <%= "Coin Type: #{transaction.coin.name}<br>".html_safe if params[:controller] != "wallets"%>
-    USD spent: <%= format_dollar_amount_of('%.2f' % transaction.money_in, "") %><br>
-    Price Per Coin: <%= format_dollar_amount_of('%.2f' % transaction.price_per_coin, "") %><br> 
-    Coins purchased: <%= '%.4f' % transaction.quantity %><br>
+<%# <%= list_item_open(params, transaction)  %>
+ <li class='list ph3 pv2 b--light-silver'>
+    <%= "<div class='mt1 ml4-l ml4-ns'>Coin Type: #{transaction.coin.name}</div>".html_safe if params[:controller] != "wallets"%>
+    <div class='ml4-l ml4-ns'>USD spent: <%= format_dollar_amount_of('%.2f' % transaction.money_in, "") %></div>
+    <div class='ml4-l ml4-ns'>Price Per Coin: <%= format_dollar_amount_of('%.2f' % transaction.price_per_coin, "") %></div> 
+    <div class='ml4-l ml4-ns'>Coins purchased: <%= '%.4f' % transaction.quantity %></div>
     <% if show_link_to_more == true %>
-        <%= link_to user_transaction_path(current_user,transaction), class: "link link_left black-80" do %>
-            <i class="fa fa-info-circle"></i>
-        <% end %>  
-    <% end %><br><br>
-<%= list_item_close(params) %>
+        <%# <%= link_to user_transaction_path(current_user,transaction), class: "link link_left black-80" do %>
+            <i data-txid="<%=transaction.id%>" data-userid="<%=current_user.id%>" id="transaction-show-more-icon" class="ml7 pl3 fa fa-ellipsis-h"></i>
+        <%# <% end %>  
+    <% end %>
+<%# <%= list_item_close(params)  %>
+</li>
+    <% if current_user.transactions.last == transaction %>
+                <li class='list ph3'>
+    <% else %>
+                <li class='list ph3 bb b--light-silver'>
+    <% end %>
+    <div id="insert-show-more-<%=transaction.id%>">
+    
+    
+    
+    </div>
+</li>
