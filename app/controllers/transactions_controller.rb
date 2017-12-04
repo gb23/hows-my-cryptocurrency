@@ -45,12 +45,11 @@ class TransactionsController < ApplicationController
 
     def show
         not_valid_transaction("view") if !authenticate(@transaction)
-        # this example the author has an active model serializer
-        #	@author = Author.find(params[:id])
-		#	respond_to do |f|
-		#		f.html { render :show }
-		#		f.json { render json: @author }
-		#	end
+
+        respond_to do |f|
+            f.html { render :show }
+            f.json { render json: @transaction }
+        end
 
     end
 
