@@ -55,7 +55,7 @@
         </fieldset>
 
         <% if @wallet.coin.last_value == (@wallet.get_current_price) || @wallet.coin.last_value == (Coin.find_by(name: @wallet.coin.name).last_value)%>
-            <%= render partial: "transactions/add" %>
+            <%# <%= render partial: "transactions/add" %> 
                 <a href="#" id="list_txs_in_wallet" data-coinname="<%=@wallet.coin.name%>" data-userid="<%=current_user.id%>" data-coinid="<%=@wallet.coin.id%>" class="link black-80 b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib">List <%= @wallet.coin.name %> Transaction History</a>
                 <div id="transactions_in_wallet">  </div>
                 
