@@ -1,3 +1,12 @@
+function Transaction(attributes){
+
+}
+
+Transaction.prototype.renderTxItem = function(){
+
+}
+
+
 $(function() {
    $("#list_txs_in_wallet").on('click', function(){
        const coin_id = $(this).data("coinid"); 
@@ -17,7 +26,30 @@ $(function() {
             changeView(image, $thisIcon, APIresponse, tx_id, user_id); 
         }); 
    });
+   $("#create-a-transaction-form").on('click', function(event){
+       event.preventDefault();
+       const user_id = $(this).data("userId");
+       showNewTransactionForm({user_id: user_id});
+
+       //"new-transaction-form"
+   });
+
+   $("form#new_transaction.new_transaction").on('submit', function(event){
+        event.preventDefault();
+        console.log("click");
+        debugger;
+   });
 });
+
+function showNewTransactionForm(userIdObj) {
+    
+    const src = $("#new-transaction-form-template").html();
+    const template = Handlebars.compile(src);
+    const newForm = template(userIdObj);
+    $("#new_transaction_form").html(newForm);
+    $("#create-a-transaction-form").replaceWith('<p id="create-a-transaction-form" class="black-80 mt0 mb0 pt1 b ph3 b--black f6" >Create a transaction:</p>')
+    $("#link_field_set").removeClass("pb4");
+}
 
 function showTxsWithTemplate(txs) {
     //Handlebars.registerPartial("notesPartial", $("#notes-partial-template").html());
