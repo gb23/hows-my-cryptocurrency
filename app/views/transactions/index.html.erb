@@ -1,6 +1,7 @@
 <main class="pa0 black-80">
   <div class="measure center">
     <%= render partial: "transactions/add" %>
+    <div id="new_transaction_form"></div>
     <fieldset class="ba b--transparent ph0 mh0">
         <legend class="tc f4 fw6 mh0"><%= current_user.name %>'s Transaction History</legend>
         <% if current_user.transactions.empty?%>
@@ -11,6 +12,46 @@
     </fieldset>
   </div>
 </main>
+    <script id="new-transaction-form-template" type="text/x-handlebars-template">
+
+        <main class="pa0 pb4 black-80">
+            <div class="tl measure center">
+            
+            <form class="new_transaction" id="new_transaction" action="/users/{{user_id}}/transactions" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" />
+                <%= hidden_field_tag :authenticity_token, form_authenticity_token %>   
+                <div class="mt3">
+                <label class="lh3 fw6 f6 dib" for="transaction_coin_id">Select Coin Type</label>
+                <span class="dib">
+                <select name="transaction[coin_id]" id="transaction_coin_id"><option value=""></option>
+            <option value="1">Ethereum</option>
+            <option value="2">Bitcoin</option>
+            <option value="3">Litecoin</option></select>
+                </span>
+                </div>
+                <fieldset class="mb3 pl4 b--moon-silver">
+                    <legend class="f6"><em>*OR*</em> If using another cryptocurrency, specify the following: </legend> 
+                    
+            
+                        <label class="lh3 fw6 f6" for="transaction_coin_attributes_name">Name</label>
+                        <input class="pa2 input-reset ba bg-transparent hover-bg-black hover-white" type="text" name="transaction[coin_attributes][name]" id="transaction_coin_attributes_name" value= ><br>
+            
+                        <label class="lh3 fw6 f6" for="transaction_coin_attributes_last_value">Current trading price: $</label>
+                        <input class="pa2 input-reset ba bg-transparent hover-bg-black hover-white" min="0" step="0.01" type="number" name="transaction[coin_attributes][last_value]" id="transaction_coin_attributes_last_value"  value=0.0>
+                        
+                </fieldset>
+            
+                <label class="lh3 fw6 f6" for="transaction_money_in">Money transferred into coins: $</label>
+                <input min="0" step="0.01" class="pa2 input-reset ba bg-transparent hover-bg-black hover-white" type="number" value="0.0" name="transaction[money_in]" id="transaction_money_in" /><br>
+            
+                <label class="lh3 fw6 f6" for="transaction_price_per_coin">Paid Price per coin: $</label>
+                <input min="0" step="0.01" class="pa2 input-reset ba bg-transparent hover-bg-black hover-white" type="number" value="0.0" name="transaction[price_per_coin]" id="transaction_price_per_coin" /><br>
+             
+                <input id="transaction_form_submit" type="submit" name="commit" value="Create Transaction" class="mt5 b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib" data-disable-with="Create Transaction" />
+            </form></div>
+            </main>        
+            
+    
+    </script>
     <script id="transaction-show-template" type="text/x-handlebars-template">
            <div class='f7 ml5-ns'>Transaction ID: {{id}}</div>
            <div class='f7 ml5-ns'>Created At: {{created_at}}</div>
