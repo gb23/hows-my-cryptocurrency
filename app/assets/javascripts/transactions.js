@@ -31,14 +31,14 @@ $(function() {
        const user_id = $(this).data("userId");
        showNewTransactionForm({user_id: user_id});
 
-       //"new-transaction-form"
-   });
-
-   $("form#new_transaction.new_transaction").on('submit', function(event){
+       $("form#new_transaction.new_transaction").on('submit', function(event){
         event.preventDefault();
         console.log("click");
         debugger;
    });
+});
+
+  
 });
 
 function showNewTransactionForm(userIdObj) {
