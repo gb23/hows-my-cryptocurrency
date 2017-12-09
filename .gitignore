@@ -21,7 +21,6 @@
 /yarn-error.log
 
 .byebug_history
-/db/seeds.rb
 
 /.env
 /.NOTES.md
