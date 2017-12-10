@@ -32,9 +32,17 @@ $(function() {
        showNewTransactionForm({user_id: user_id});
 
        $("form#new_transaction.new_transaction").on('submit', function(event){
-        event.preventDefault();
-        console.log("click");
-        debugger;
+            event.preventDefault();
+            console.log("click");
+            debugger;
+            const params = $(this).serialize();
+            // put a data-id of user_id so we can use it in the post request
+            //const address =  /users/:user_id/transactions
+            const posting = $.post(address, params); 
+            posting.done(function(data) {           
+                // TODO: handle response 
+                //use js object models and a prototype method
+            }); 
    });
 });
 
@@ -55,7 +63,7 @@ function showTxsWithTemplate(txs) {
     //Handlebars.registerPartial("notesPartial", $("#notes-partial-template").html());
     const src = $("#transaction-template").html();
     const template = Handlebars.compile(src);
-    const txList = template(txs);
+    const txList = template(txs.reverse());
     $("#transactions_in_wallet").html(txList);
 }
 function showExtraTxDataTemplate(txAdditionalInfo, tx_id, user_id) {
