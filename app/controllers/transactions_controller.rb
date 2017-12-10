@@ -33,7 +33,13 @@ class TransactionsController < ApplicationController
             @transaction.save_coin_and_wallet_if_user_typed_in(current_user)
 
             @transaction.save
-            redirect_to user_transactions_path(current_user), notice: "Transaction saved!"
+            respond_to do |f|
+                f.html { redirect_to user_transactions_path(current_user), notice: "Transaction saved!"}
+                f.json { render json: @transaction, status: 201 }
+            end
+            #use below for html and below that for json
+            #redirect_to user_transactions_path(current_user), notice: "Transaction saved!"
+           #render json: @post, status: 201 
         else
             @transaction.coin = Coin.new(name: @transaction.typed_in_coin_name, last_value: @transaction.typed_in_last_value) if @transaction.did_user_not_select_name?
             
