@@ -6,8 +6,8 @@
         <legend class="tc f4 fw6 mh0"><%= current_user.name %>'s Transaction History</legend>
         <% if current_user.transactions.empty?%>
             <label class="fw6 lh-copy f6">You have no transaction history; create a transaction to get going!</label>
-        <% else %>
-            <ol class="pl0 ml0 ba b--light-silver br3"><%= render partial: "transactions/list", collection: @transactions, as: :transaction, locals: {show_link_to_more: true} %></ol>
+        <% else %>   
+            <ol class="pl0 ml0 ba b--light-silver br3"><%= render partial: "transactions/list", collection: @transactions.reverse, as: :transaction, locals: {show_link_to_more: true} %></ol>
         <% end %>
     </fieldset>
   </div>

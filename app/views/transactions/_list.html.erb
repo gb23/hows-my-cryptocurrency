@@ -11,7 +11,7 @@
     <% end %>
 <%# <%= list_item_close(params)  %>
 </li>
-    <% if current_user.transactions.last == transaction %>
+    <% if current_user.transactions.first == transaction %>
                 <li class='list ph3'>
     <% else %>
                 <li class='list ph3 bb b--light-silver'>

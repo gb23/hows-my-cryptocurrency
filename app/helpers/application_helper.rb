@@ -48,7 +48,7 @@ module ApplicationHelper
 
     def list_item_open(params, transaction)
         if params[:action] != "show" || params[:controller] != "transactions"
-            if current_user.transactions.last == transaction
+            if current_user.transactions.first == transaction
                 "<li class='list ph3 pv2'>".html_safe
             else
                 "<li class='list ph3 pv2 bb b--light-silver'>".html_safe 
