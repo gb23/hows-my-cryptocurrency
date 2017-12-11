@@ -1,9 +1,17 @@
 function Transaction(attributes){
-
+    this.user_id = attributes.user_id
+    this.coin_name = attributes.coin_name
+    this.id = attributes.id
+    this.money_in = attributes.money_in.toFixed(2)
+    this.price_per_coin = attributes.price_per_coin.toFixed(2)
+    this.quantity = attributes.quantity.toFixed(4)
 }
 
 Transaction.prototype.renderTxItem = function(){
-
+    const src = $("#newly-created-transaction-template").html();
+    const template = Handlebars.compile(src);
+    const txItem = template(this);
+    $("#preprend-new-transaction").prepend(txItem);
 }
 
 
@@ -17,7 +25,7 @@ $(function() {
             changeListLink(coin_name);
         });
    }); 
-   $("[id=transaction-show-more-icon]").on('click', function(){
+   $("ol").on('click',"i", function(){
         const tx_id = $(this).data("txid"); 
         const user_id = $(this).data("userid");
         const image = $(this).data("image");
@@ -32,21 +40,65 @@ $(function() {
        showNewTransactionForm({user_id: user_id});
 
        $("form#new_transaction.new_transaction").on('submit', function(event){
-            event.preventDefault();
+            event.preventDefault();            
             console.log("click");
-            debugger;
             const params = $(this).serialize();
-            // put a data-id of user_id so we can use it in the post request
-            //const address =  /users/:user_id/transactions
-            const posting = $.post(address, params); 
-            posting.done(function(data) {           
-                // TODO: handle response 
-                //use js object models and a prototype method
-            }); 
-   });
-});
 
-  
+            const address = $(this).attr("action");
+            const posting = $.ajax({
+                type: "POST",
+                url: address, 
+                data: params,
+              //  dataType: "json"
+            }); 
+            posting.done(function(APIresponse) {     
+                console.log("called back")
+                    
+                // TODO: handle response 
+
+            
+                //If APIresponse gives back HTML (meaning error-filled form):
+                //.failure
+ // if (APIresponse.includes("error")) {
+    // console.log("APIresponse has error")
+    // debugger;
+                     //for error(s) in a form, clear  <div id="new_transaction_form"></div> and fill in with APIresponse:
+                    
+    // $('#new_transaction_form').empty();
+    //$('#new_transaction_form').html(APIresponse);
+                     //potential fix for bug listed below:
+                         //take API response and eliminate HTML starting right below div id="new_transaction_form"
+                         // until div class="tl_measure_center"? 
+                                 //the issue is that a class=mesaure_center already exists prior to injection
+                     //BUG alert: multiple error form submissions eliminates transaction history at bottom 
+                     // of the page.  Fix!
+                //.failure    
+              //  } else {
+                    console.log("APIresponse is good!")
+                    const transaction = new Transaction(APIresponse);
+                    transaction.renderTxItem();
+                //If APIresponse is transaction json: 
+                           
+                           //MAKE SURE that if multiple txs are created entirely in JS, the order is correct
+                          
+                           //re-render a new fresh form i.e. 
+                           //eliminate the form and replace with the "create a transaction" button
+                //end
+
+ 
+             //   }
+                
+                    //ELSEWHERE in the project:
+                    //form needs to handle NOTES input.  'Add Note' button renders in js a text entry field.
+                    //user is free to click 'add note' button as many times
+                    //upon submission, any blank text entry fields are disregarded
+
+                    //delete from index. can you remove completely in js??
+
+
+            }); 
+        });
+    }); 
 });
 
 function showNewTransactionForm(userIdObj) {
