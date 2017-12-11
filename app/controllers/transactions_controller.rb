@@ -31,11 +31,11 @@ class TransactionsController < ApplicationController
         if @transaction.valid? && @transaction.coin.valid? 
 
             @transaction.save_coin_and_wallet_if_user_typed_in(current_user)
-
             @transaction.save
             respond_to do |f|
-                f.html { redirect_to user_transactions_path(current_user), notice: "Transaction saved!"}
-                f.json { render json: @transaction, status: 201 }
+                f.json{render json: @transaction.attributes.merge({user_id: current_user.id}).merge({coin_name:@transaction.coin.name}), status: 201 }
+                f.html{redirect_to user_transactions_path(current_user), notice: "Transaction saved!"}
+               
             end
             #use below for html and below that for json
             #redirect_to user_transactions_path(current_user), notice: "Transaction saved!"
@@ -44,8 +44,16 @@ class TransactionsController < ApplicationController
             @transaction.coin = Coin.new(name: @transaction.typed_in_coin_name, last_value: @transaction.typed_in_last_value) if @transaction.did_user_not_select_name?
             
             @transaction.run_validation_if_typed_in_name 
-
-            render 'transactions/new'
+           #?????
+            respond_to do |f|
+                f.json{render json: 'transactions/new' }
+                f.html{render 'transactions/new' } 
+            end
+            
+            # respond_to do |f|
+            #     f.html { redirect_to user_transactions_path(current_user), notice: "Transaction saved!"}
+            #     f.json { render json: @transaction, status: 201 }
+            # end
         end
     end
 
