@@ -11,6 +11,7 @@
     <% end %>
 <%# <%= list_item_close(params)  %>
 </li>
+    <%# first transaction will be on bottom of list, this will format appropriately %>
     <% if current_user.transactions.first == transaction %>
                 <li class='list ph3'>
     <% else %>
