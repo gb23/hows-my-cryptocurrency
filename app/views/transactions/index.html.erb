@@ -5,7 +5,9 @@
     <fieldset class="ba b--transparent ph0 mh0">
         <legend class="tc f4 fw6 mh0"><%= current_user.name %>'s Transaction History</legend>
         <% if current_user.transactions.empty?%>
-            <label class="fw6 lh-copy f6">You have no transaction history; create a transaction to get going!</label>
+         <ol id="preprend-new-transaction" class="pl0 ml0 ba b--light-silver br3">
+            <label id="no-transactions" class="pl3 fw6 lh-copy f6">You have no transaction history; create a transaction to get going!</label>
+         </ol>
         <% else %>   
             <ol id="preprend-new-transaction" class="pl0 ml0 ba b--light-silver br3">
                 <%= render partial: "transactions/list", collection: @transactions.reverse, as: :transaction, locals: {show_link_to_more: true} %>
@@ -24,14 +26,19 @@
                 <div class="mt3">
                 <label class="lh3 fw6 f6 dib" for="transaction_coin_id">Select Coin Type</label>
                 <span class="dib">
-                <select name="transaction[coin_id]" id="transaction_coin_id"><option value=""></option>
-            <option value="1">Ethereum</option>
-            <option value="2">Bitcoin</option>
-            <option value="3">Litecoin</option></select>
+                <select onchange="checkIfListed(this);"name="transaction[coin_id]" id="transaction_coin_id">
+                <option value=""></option>
+                    <%# <option value="1">Ethereum</option>
+                    <option value="2">Bitcoin</option>
+                    <option value="3">Litecoin</option> %>
+                   <%# {{coin_name_selectors}} %>
+                    <%= current_user.allCoinOptions %>
+                <option value="-1">Not listed...</option>
+            </select>
                 </span>
                 </div>
-                <fieldset class="mb3 pl4 b--moon-silver">
-                    <legend class="f6"><em>*OR*</em> If using another cryptocurrency, specify the following: </legend> 
+                <fieldset style="display:none;" id="another-coin" class="mb3 pl4 b--moon-silver">
+                    <legend class="f6">For a <em>different</em> cryptocurrency, specify the following: </legend> 
                     
             
                         <label class="lh3 fw6 f6" for="transaction_coin_attributes_name">Name</label>
@@ -49,11 +56,14 @@
                 <input min="0" step="0.01" class="pa2 input-reset ba bg-transparent hover-bg-black hover-white" type="number" value="0.0" name="transaction[price_per_coin]" id="transaction_price_per_coin" /><br>
              
                 <input id="transaction_form_submit" type="submit" name="commit" value="Create Transaction" class="mt5 b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib" data-disable-with="Create Transaction" />
-            </form></div>
+
+
+            </form>
+            </div>
             </main>        
-            
-    
     </script>
+
+   
     <script id="transaction-show-template" type="text/x-handlebars-template">
            <div class='f7 ml5-ns'>Transaction ID: {{id}}</div>
            <div class='f7 ml5-ns'>Created At: {{created_at}}</div>
