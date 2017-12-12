@@ -1,5 +1,3 @@
-
-
 function Transaction(attributes){
     this.user_id = attributes.user_id;
     this.coin_name = attributes.coin_name;
@@ -19,9 +17,6 @@ Transaction.prototype.renderTxItem = function(){
         $("#no-transactions").removeClass();
         $("[id^='insert-show-more']").parent().removeClass("bb").removeClass("b--light-silver");
     } 
-    //else {
-      //  $("[id^='insert-show-more']").parent().addClass("bb").addClass("b--light-silver");
-    //}
 }
 
 
@@ -44,10 +39,16 @@ $(function() {
             changeView(image, $thisIcon, APIresponse, tx_id, user_id); 
         }); 
    });
+
    $("fieldset#link_field_set").on('click',"#create-a-transaction-form", function(event){
        event.preventDefault();
        const user_id = $(this).data("userId");
        showNewTransactionForm({user_id: user_id});
+
+       $("#add_comment").on('click', "i", function(){
+            //display text field
+            //display new 'add a comment'
+       });
 
        $("form#new_transaction.new_transaction").on('submit', function(event){
             event.preventDefault();            
@@ -106,35 +107,6 @@ $(function() {
     }); 
 });
 
-// Handlebars.registerHelper('coin_name_selectors', function(response){
-//     let htmlOptions = "";
-//     // $.ajax({
-//     //     url: `/users/${response.data.root.user_id}/coins`,
-//     //     async: true,
-//     //     success: function(APIresponse){
-//     //         APIresponse.coins.forEach(coin =>{
-//     //           htmlOptions += `<option value="${coin.id}">${coin.name}</option>`; 
-//     //         });
-//     //         const options = new Handlebars.SafeString(htmlOptions);
-//     //         return "hello!!!!!!!!!!!!"
-//     //         // $('select#transaction_coin_id').prepend(options)
-//     //     } 
-//     // });
-//     $.getJSON(`/users/${response.data.root.user_id}/coins`,function(APIresponse){
-//         APIresponse.coins.forEach(coin =>{
-//           htmlOptions += `<option value="${coin.id}">${coin.name}</option>`; 
-//         });
-//          const options = new Handlebars.SafeString(htmlOptions);
-
-//          debugger;
-//          return "hello!!!!!!!!!!!!"
-//         // $('select#transaction_coin_id').prepend(options)
-//     }); 
-
-//     // //<option value="{{id}}">{{name}}</option>
-// });  
-
-
 function checkIfListed(selection) {
     if (selection.value == "-1"){
         $("#another-coin").show();
@@ -156,34 +128,6 @@ function showNewTransactionForm(userIdObj) {
     $("#create-a-transaction-form").replaceWith('<p id="create-a-transaction-form" class="black-80 mt0 mb0 pt1 b ph3 b--black f6" >Create a transaction:</p>')
     $("#link_field_set").removeClass("pb4");
 }
-// Handlebars.registerHelper('coin_name_selectors', function(response){
-//     debugger;
-//     let htmlOptions = "";
-//     // $.ajax({
-//     //     url: `/users/${response.data.root.user_id}/coins`,
-//     //     async: true,
-//     //     success: function(APIresponse){
-//     //         APIresponse.coins.forEach(coin =>{
-//     //           htmlOptions += `<option value="${coin.id}">${coin.name}</option>`; 
-//     //         });
-//     //         const options = new Handlebars.SafeString(htmlOptions);
-//     //         return "hello!!!!!!!!!!!!"
-//     //         // $('select#transaction_coin_id').prepend(options)
-//     //     } 
-//     // });
-//     $.getJSON(`/users/${response.data.root.user_id}/coins`,function(APIresponse){
-//         APIresponse.coins.forEach(coin =>{
-//           htmlOptions += `<option value="${coin.id}">${coin.name}</option>`; 
-//         });
-//          const options = new Handlebars.SafeString(htmlOptions);
-
-//          debugger;
-//          return options;
-//         // $('select#transaction_coin_id').prepend(options)
-//     }); 
-
-//     // //<option value="{{id}}">{{name}}</option>
-// });  
 
 function showTxsWithTemplate(txs) {
     //Handlebars.registerPartial("notesPartial", $("#notes-partial-template").html());
