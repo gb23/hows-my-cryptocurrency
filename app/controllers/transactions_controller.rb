@@ -106,8 +106,10 @@ class TransactionsController < ApplicationController
         wallet.update_wallet_with(negative_transaction)
         @transaction.destroy 
 
-        #if user has no transactions with coin_id, delete wallet
-        wallet.destroy if current_user.transactions.find_by(coin_id: coin_id).nil?
+        #if user has no transactions with coin_id, delete wallet AND wallet is not Ethereum, Bitcoin, or Litecoin
+        if current_user.transactions.find_by(coin_id: coin_id).nil? && wallet.name != "Ethereum" && wallet.name != "Bitcoin" && wallet.name != "Litecoin"
+            wallet.destroy 
+        end
         
         redirect_to user_transactions_path(current_user), notice: "Transaction has been deleted!"
     end
