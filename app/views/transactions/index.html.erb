@@ -67,7 +67,14 @@
             </div>
             </main>        
     </script>
-
+    
+    <script id="notes-partial" type="text/x-handlebars-template">
+        <label class="lh3 fw6 f6" for="transaction_coin_attributes_name">Comment</label>
+        <input class="pa2 input-reset ba bg-transparent hover-bg-black hover-white" type="text" name="transaction[note_attributes][comment][]" id="transaction_note_attributes_comment" value= ><br>
+        <div id="add_comment" class="mt3 mb3">
+            <i class="fa fa-plus-circle ">Add a comment <em>(optional)</em></i>
+        </div>
+    </script>
    
     <script id="transaction-show-template" type="text/x-handlebars-template">
            <div class='f7 ml5-ns'>Transaction ID: {{id}}</div>
