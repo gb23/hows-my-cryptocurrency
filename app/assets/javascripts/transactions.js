@@ -1,10 +1,12 @@
+
+
 function Transaction(attributes){
-    this.user_id = attributes.user_id
-    this.coin_name = attributes.coin_name
-    this.id = attributes.id
-    this.money_in = attributes.money_in.toFixed(2)
-    this.price_per_coin = attributes.price_per_coin.toFixed(2)
-    this.quantity = attributes.quantity.toFixed(4)
+    this.user_id = attributes.user_id;
+    this.coin_name = attributes.coin_name;
+    this.id = attributes.id;
+    this.money_in = attributes.money_in.toFixed(2);
+    this.price_per_coin = attributes.price_per_coin.toFixed(2);
+    this.quantity = attributes.quantity.toFixed(4);
 }
 
 Transaction.prototype.renderTxItem = function(){
@@ -12,6 +14,14 @@ Transaction.prototype.renderTxItem = function(){
     const template = Handlebars.compile(src);
     const txItem = template(this);
     $("#preprend-new-transaction").prepend(txItem);
+    if($("#no-transactions").text()){
+        $("#no-transactions").empty();
+        $("#no-transactions").removeClass();
+        $("[id^='insert-show-more']").parent().removeClass("bb").removeClass("b--light-silver");
+    } 
+    //else {
+      //  $("[id^='insert-show-more']").parent().addClass("bb").addClass("b--light-silver");
+    //}
 }
 
 
@@ -34,7 +44,7 @@ $(function() {
             changeView(image, $thisIcon, APIresponse, tx_id, user_id); 
         }); 
    });
-   $("#create-a-transaction-form").on('click', function(event){
+   $("fieldset#link_field_set").on('click',"#create-a-transaction-form", function(event){
        event.preventDefault();
        const user_id = $(this).data("userId");
        showNewTransactionForm({user_id: user_id});
@@ -43,13 +53,13 @@ $(function() {
             event.preventDefault();            
             console.log("click");
             const params = $(this).serialize();
-
             const address = $(this).attr("action");
+            const user_id =  /\d+/.exec(address)[0]
             const posting = $.ajax({
                 type: "POST",
                 url: address, 
                 data: params,
-              //  dataType: "json"
+                dataType: "json"
             }); 
             posting.done(function(APIresponse) {     
                 console.log("called back")
@@ -77,12 +87,9 @@ $(function() {
                     console.log("APIresponse is good!")
                     const transaction = new Transaction(APIresponse);
                     transaction.renderTxItem();
-                //If APIresponse is transaction json: 
-                           
-                           //MAKE SURE that if multiple txs are created entirely in JS, the order is correct
-                          
-                           //re-render a new fresh form i.e. 
-                           //eliminate the form and replace with the "create a transaction" button
+                    restoreCreateATransaction(user_id);
+        
+     
                 //end
 
  
@@ -94,15 +101,54 @@ $(function() {
                     //upon submission, any blank text entry fields are disregarded
 
                     //delete from index. can you remove completely in js??
-
-
             }); 
         });
     }); 
 });
 
+// Handlebars.registerHelper('coin_name_selectors', function(response){
+//     let htmlOptions = "";
+//     // $.ajax({
+//     //     url: `/users/${response.data.root.user_id}/coins`,
+//     //     async: true,
+//     //     success: function(APIresponse){
+//     //         APIresponse.coins.forEach(coin =>{
+//     //           htmlOptions += `<option value="${coin.id}">${coin.name}</option>`; 
+//     //         });
+//     //         const options = new Handlebars.SafeString(htmlOptions);
+//     //         return "hello!!!!!!!!!!!!"
+//     //         // $('select#transaction_coin_id').prepend(options)
+//     //     } 
+//     // });
+//     $.getJSON(`/users/${response.data.root.user_id}/coins`,function(APIresponse){
+//         APIresponse.coins.forEach(coin =>{
+//           htmlOptions += `<option value="${coin.id}">${coin.name}</option>`; 
+//         });
+//          const options = new Handlebars.SafeString(htmlOptions);
+
+//          debugger;
+//          return "hello!!!!!!!!!!!!"
+//         // $('select#transaction_coin_id').prepend(options)
+//     }); 
+
+//     // //<option value="{{id}}">{{name}}</option>
+// });  
+
+
+function checkIfListed(selection) {
+    if (selection.value == "-1"){
+        $("#another-coin").show();
+    } else{
+        $("#another-coin").hide();
+    }
+}
+function restoreCreateATransaction(user_id) {
+    $("#new_transaction_form").empty();
+    $("#create-a-transaction-form").replaceWith(`<a data-user-id="${user_id}" id="create-a-transaction-form" class="link black-80 b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib" href="/users/${user_id}/transactions/new">Create a transaction</a>`)
+    $("#link_field_set").addClass("pb4");
+}
+
 function showNewTransactionForm(userIdObj) {
-    
     const src = $("#new-transaction-form-template").html();
     const template = Handlebars.compile(src);
     const newForm = template(userIdObj);
@@ -110,6 +156,34 @@ function showNewTransactionForm(userIdObj) {
     $("#create-a-transaction-form").replaceWith('<p id="create-a-transaction-form" class="black-80 mt0 mb0 pt1 b ph3 b--black f6" >Create a transaction:</p>')
     $("#link_field_set").removeClass("pb4");
 }
+// Handlebars.registerHelper('coin_name_selectors', function(response){
+//     debugger;
+//     let htmlOptions = "";
+//     // $.ajax({
+//     //     url: `/users/${response.data.root.user_id}/coins`,
+//     //     async: true,
+//     //     success: function(APIresponse){
+//     //         APIresponse.coins.forEach(coin =>{
+//     //           htmlOptions += `<option value="${coin.id}">${coin.name}</option>`; 
+//     //         });
+//     //         const options = new Handlebars.SafeString(htmlOptions);
+//     //         return "hello!!!!!!!!!!!!"
+//     //         // $('select#transaction_coin_id').prepend(options)
+//     //     } 
+//     // });
+//     $.getJSON(`/users/${response.data.root.user_id}/coins`,function(APIresponse){
+//         APIresponse.coins.forEach(coin =>{
+//           htmlOptions += `<option value="${coin.id}">${coin.name}</option>`; 
+//         });
+//          const options = new Handlebars.SafeString(htmlOptions);
+
+//          debugger;
+//          return options;
+//         // $('select#transaction_coin_id').prepend(options)
+//     }); 
+
+//     // //<option value="{{id}}">{{name}}</option>
+// });  
 
 function showTxsWithTemplate(txs) {
     //Handlebars.registerPartial("notesPartial", $("#notes-partial-template").html());
