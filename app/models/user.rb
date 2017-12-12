@@ -42,6 +42,20 @@ class User < ApplicationRecord
     self.save
   end
 
+  def allCoinOptions
+    #Wallet.where(["user_id = ? and coin_id = ?", self.user_id, self.coin_id]).first
+    htmlOptions = ""
+    self.wallets.each do |wallet|
+      if Coin.all.detect{ |coin| coin.name == wallet.name}
+        htmlOptions += "<option value='#{Coin.all.detect{ |coin| coin.name == wallet.name}.id}'>#{wallet.name}</option>"
+      end
+    end
+    htmlOptions.html_safe
+    #<%# <option value="1">Ethereum</option>
+    #<option value="2">Bitcoin</option>
+    #<option value="3">Litecoin</option> %>
+  end
+
   private
 
   def give_wallets
@@ -49,4 +63,5 @@ class User < ApplicationRecord
           self.wallets.create(name: coin.name, coin_id: coin.id ) if big_3?(coin)
     end
   end
+
 end
