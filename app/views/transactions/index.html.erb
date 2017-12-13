@@ -28,11 +28,7 @@
                 <span class="dib">
                 <select onchange="checkIfListed(this);"name="transaction[coin_id]" id="transaction_coin_id">
                 <option value=""></option>
-                    <%# <option value="1">Ethereum</option>
-                    <option value="2">Bitcoin</option>
-                    <option value="3">Litecoin</option> %>
-                   <%# {{coin_name_selectors}} %>
-                    <%= current_user.allCoinOptions %>
+                <%= current_user.allCoinOptions %>
                 <option value="-1">Not listed...</option>
             </select>
                 </span>
@@ -55,13 +51,12 @@
                 <label class="lh3 fw6 f6" for="transaction_price_per_coin">Paid Price per coin: $</label>
                 <input min="0" step="0.01" class="pa2 input-reset ba bg-transparent hover-bg-black hover-white" type="number" value="0.00" name="transaction[price_per_coin]" id="transaction_price_per_coin" /><br>
 
-            <%# <di class="edit link black-80" href="{{editURL}}"> %>
                 <div id="add_comment" class="mt3 mb3">
                     <i class="fa fa-plus-circle ">Add a comment <em>(optional)</em></i>
-                    <label class="lh3 fw6 f6" for="transaction_note_attributes_comment">Comment</label>
-                    <input class="pa2 input-reset ba bg-transparent hover-bg-black hover-white" type="text" name="transaction[note_attributes][comments][]" id="transaction_note_attributes_comment" value= ><br>
-                     <label class="lh3 fw6 f6" for="transaction_note_attributes_comment">Comment</label>
-                    <input class="pa2 input-reset ba bg-transparent hover-bg-black hover-white" type="text" name="transaction[note_attributes][comments][]" id="transaction_note_attributes_comment" value= ><br>
+                    <%# <label class="lh3 fw6 f6" for="transaction_note_attributes_comment">Comment</label> %>
+                    <%# <input class="pa2 input-reset ba bg-transparent hover-bg-black hover-white" type="text" name="transaction[note_attributes][comments][]" id="transaction_note_attributes_comment" value= ><br> %>
+                     <%# <label class="lh3 fw6 f6" for="transaction_note_attributes_comment">Comment</label> %>
+                    <%# <input class="pa2 input-reset ba bg-transparent hover-bg-black hover-white" type="text" name="transaction[note_attributes][comments][]" id="transaction_note_attributes_comment" value= ><br> %>
                 </div>
 
                 <input id="transaction_form_submit" type="submit" name="commit" value="Create Transaction" class="mt2 b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib" data-disable-with="Create Transaction" />
