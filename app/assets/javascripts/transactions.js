@@ -19,7 +19,6 @@ Transaction.prototype.renderTxItem = function(){
     } 
 }
 
-
 $(function() {
    $("#list_txs_in_wallet").on('click', function(){
        const coin_id = $(this).data("coinid"); 
@@ -46,13 +45,23 @@ $(function() {
        showNewTransactionForm({user_id: user_id});
 
        $("#add_comment").on('click', "i", function(){
-            //display text field
-            //display new 'add a comment'
+            $("#add_comment i").remove();
+            $("#add_comment").removeClass("mt3")
+            $("#add_comment").append('<label class="lh3 fw6 f6" for="transaction_note_attributes_comment">Comment:</label>');
+            $("#add_comment").append('<textarea class="db pa2 input-reset ba bg-transparent hover-bg-black hover-white" type="text" name="transaction[note_attributes][comments][]" id="transaction_note_attributes_comment" rows="4" cols="30"></textarea>');
+            $("#add_comment").append('<i class="mt3 fa fa-plus-circle ">Add <em>another</em> comment <em>(optional)</em></i>')
        });
 
        $("form#new_transaction.new_transaction").on('submit', function(event){
+        //Code below is if want to explore caching typed in coin names so drop down options are fresh   
+        // const typedCoinNames = localStorage['typedCoinNames'];
             event.preventDefault();            
             console.log("click");
+                   //Code below is if want to explore caching typed in coin names so drop down options are fresh   
+            // if ($(this)["0"][4].value !== ""){
+           //     typedCoinNames.push($(this)["0"][4].value);
+           //     localStorage['typedCoinNames'] = typedCoinNames;
+           // }
             const params = $(this).serialize();
             const address = $(this).attr("action");
             const user_id =  /\d+/.exec(address)[0]
@@ -95,12 +104,6 @@ $(function() {
 
  
              //   }
-                
-                    //ELSEWHERE in the project:
-                    //form needs to handle NOTES input.  'Add Note' button renders in js a text entry field.
-                    //user is free to click 'add note' button as many times
-                    //upon submission, any blank text entry fields are disregarded
-
                     //delete from index. can you remove completely in js??
             }); 
         });
@@ -130,14 +133,12 @@ function showNewTransactionForm(userIdObj) {
 }
 
 function showTxsWithTemplate(txs) {
-    //Handlebars.registerPartial("notesPartial", $("#notes-partial-template").html());
     const src = $("#transaction-template").html();
     const template = Handlebars.compile(src);
     const txList = template(txs.reverse());
     $("#transactions_in_wallet").html(txList);
 }
 function showExtraTxDataTemplate(txAdditionalInfo, tx_id, user_id) {
-    //insert-show-more-<%=transaction.id%>
     const src = $("#transaction-show-template").html();
     
     const template = Handlebars.compile(src);
@@ -149,8 +150,7 @@ function showExtraTxDataTemplate(txAdditionalInfo, tx_id, user_id) {
     const deleteURL = `/users/${user_id}/transactions/${tx_id}`
     const editURL = `/users/${user_id}/transactions/${tx_id}/edit`
     const modFeature = templateForMod({deleteURL: deleteURL, editURL: editURL });
-    // $(`#insert-edit-delete-${tx_id}`).html(modFeature);
-    //<div id="insert-edit-delte-<%=transaction.id%>"></div>
+
     $(`#insert-show-more-${tx_id}`).append(modFeature);
     $(`#insert-show-more-${tx_id}`).addClass("pb4");
 }
