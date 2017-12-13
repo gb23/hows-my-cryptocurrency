@@ -56,9 +56,11 @@ class Transaction < ApplicationRecord
     def did_user_not_type_in_name?
         @transaction_params[:coin_attributes][:name].empty?
     end
-
-    def did_user_not_select_name?
+    def did_user_leave_default_blank_name?
         @transaction_params[:coin_id].empty?
+    end
+    def did_user_not_select_name?
+        @transaction_params[:coin_id].empty? || @transaction_params[:coin_id] == "-1"
     end
 
     def typed_in_coin_name

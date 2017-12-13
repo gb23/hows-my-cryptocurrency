@@ -39,23 +39,30 @@ class TransactionsController < ApplicationController
                 f.html{redirect_to user_transactions_path(current_user), notice: "Transaction saved!"}
                
             end
-            #use below for html and below that for json
-            #redirect_to user_transactions_path(current_user), notice: "Transaction saved!"
-           #render json: @post, status: 201 
         else
+            #these two lines are for validation error generation if using HTML request
+
             @transaction.coin = Coin.new(name: @transaction.typed_in_coin_name, last_value: @transaction.typed_in_last_value) if @transaction.did_user_not_select_name?
-            
             @transaction.run_validation_if_typed_in_name 
-           #?????
-            respond_to do |f|
-                f.json{render json: 'transactions/new' }
-                f.html{render 'transactions/new' } 
+
+            notesPresent = transaction_params.keys.detect{|key| key == "note_attributes"}
+            if notesPresent
+                notes = transaction_params[:note_attributes][:comments]
+            else
+                notes = nil
             end
             
-            # respond_to do |f|
-            #     f.html { redirect_to user_transactions_path(current_user), notice: "Transaction saved!"}
-            #     f.json { render json: @transaction, status: 201 }
-            # end
+            if @transaction.did_user_not_select_name? && !@transaction.did_user_leave_default_blank_name?#@transaction.coin_id != -1 #user does NOT choose "not listed..." from drop down selection
+                respond_to do |f|
+                    f.json{render json: @transaction.attributes.merge({user_id: current_user.id}.merge({coin_id:transaction_params[:coin_id]}.merge({last_value:transaction_params[:coin_attributes][:last_value]}.merge({notes: notes}.merge(form: "open")))))}  
+                    f.html{render 'transactions/new' } 
+                end
+            else #user chooses "not listed..." from drop down selection
+                respond_to do |f|
+                    f.json{render json: @transaction.attributes.merge({user_id: current_user.id}.merge({coin_id:transaction_params[:coin_id]}.merge({notes: notes}.merge(form: "closed"))))}
+                    f.html{render 'transactions/new' } 
+                end
+            end
         end
     end
 
