@@ -155,7 +155,7 @@ function showExtraTxDataTemplate(txAdditionalInfo, tx_id, user_id) {
     $(`#insert-show-more-${tx_id}`).addClass("pb4");
 }
 function changeListLink(coinName){
-    $("#list_txs_in_wallet").replaceWith(`<p id="list_txs_in_wallet" class="mt0 black-80 b ph3 pv2 ba f6 dib">${coinName} Transaction History</p>`)
+    $("#list_txs_in_wallet").replaceWith(`<p id="list_txs_in_wallet" class="mt0 black-80 b ph3 pv2 f6 dib">${coinName} Transaction History:</p>`)
 }
 
 function changeView(displayedImage, $icon, APIresponse, tx_id, user_id) {
