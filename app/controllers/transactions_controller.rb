@@ -23,15 +23,17 @@ class TransactionsController < ApplicationController
     end
 
     def create        
+
         @transaction = current_user.transactions.build(transaction_params)
         @transaction.user_input = params[:transaction]
         
         current_user.wallets.build(name: @transaction.coin.name) if @transaction.user_type_in_name_and_no_wallet_exits_yet(current_user)
-        
+
         if @transaction.valid? && @transaction.coin.valid? 
 
             @transaction.save_coin_and_wallet_if_user_typed_in(current_user)
             @transaction.save
+            
             respond_to do |f|
                 f.json{render json: @transaction.attributes.merge({user_id: current_user.id}).merge({coin_name:@transaction.coin.name}), status: 201 }
                 f.html{redirect_to user_transactions_path(current_user), notice: "Transaction saved!"}
@@ -106,7 +108,7 @@ class TransactionsController < ApplicationController
         wallet.update_wallet_with(negative_transaction)
         @transaction.destroy 
 
-        #if user has no transactions with coin_id, delete wallet AND wallet is not Ethereum, Bitcoin, or Litecoin
+        #if user has no other transactions with coin_id, delete AND wallet is not Ethereum, Bitcoin, or Litecoin then delete wallet
         if current_user.transactions.find_by(coin_id: coin_id).nil? && wallet.name != "Ethereum" && wallet.name != "Bitcoin" && wallet.name != "Litecoin"
             wallet.destroy 
         end
@@ -123,7 +125,7 @@ class TransactionsController < ApplicationController
     end
 
     def transaction_params
-        params.require(:transaction).permit(:money_in, :price_per_coin, :coin_id, :comment, coin_attributes: [:name, :last_value, :id]) 
+        params.require(:transaction).permit(:money_in, :price_per_coin, :coin_id, :comment, coin_attributes: [:name, :last_value, :id], note_attributes:[comments:[]]) 
     end
 
     def authenticate(transaction)
