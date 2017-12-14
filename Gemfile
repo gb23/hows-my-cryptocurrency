@@ -8,7 +8,7 @@ gem 'active_model_serializers'
 gem 'jquery-rails'
 gem 'devise'
 gem 'coinbase-exchange'
-
+gem 'faraday'
 gem 'omniauth'
 gem 'omniauth-facebook'
 
