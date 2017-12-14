@@ -28,8 +28,8 @@ class TransactionsController < ApplicationController
         @transaction.user_input = params[:transaction]
         
         current_user.wallets.build(name: @transaction.coin.name) if @transaction.user_type_in_name_and_no_wallet_exits_yet(current_user)
-
-        if @transaction.valid? && @transaction.coin.valid? 
+        
+        if @transaction.valid? && (!@transaction.coin.nil? && @transaction.coin.valid?) 
 
             @transaction.save_coin_and_wallet_if_user_typed_in(current_user)
             @transaction.save
@@ -51,15 +51,14 @@ class TransactionsController < ApplicationController
             else
                 notes = nil
             end
-            
             if @transaction.did_user_not_select_name? && !@transaction.did_user_leave_default_blank_name?#@transaction.coin_id != -1 #user does NOT choose "not listed..." from drop down selection
                 respond_to do |f|
-                    f.json{render json: @transaction.attributes.merge({user_id: current_user.id}.merge({coin_id:transaction_params[:coin_id]}.merge({last_value:transaction_params[:coin_attributes][:last_value]}.merge({notes: notes}.merge(form: "open")))))}  
+                    f.json{render json: @transaction.attributes.merge({user_id: current_user.id}.merge({coin_id:transaction_params[:coin_id]}.merge({last_value:transaction_params[:coin_attributes][:last_value]}.merge({notes: notes}.merge({form: "open"}.merge({coin_name:transaction_params[:coin_attributes][:name]}))))))}  
                     f.html{render 'transactions/new' } 
                 end
             else #user chooses "not listed..." from drop down selection
                 respond_to do |f|
-                    f.json{render json: @transaction.attributes.merge({user_id: current_user.id}.merge({coin_id:transaction_params[:coin_id]}.merge({notes: notes}.merge(form: "closed"))))}
+                    f.json{render json: @transaction.attributes.merge({user_id: current_user.id}.merge({coin_id:transaction_params[:coin_id]}.merge({last_value:transaction_params[:coin_attributes][:last_value]}.merge({notes: notes}.merge({form: "closed"}.merge({coin_name:transaction_params[:coin_attributes][:name]}))))))}  
                     f.html{render 'transactions/new' } 
                 end
             end
