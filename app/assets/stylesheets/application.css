@@ -14,24 +14,29 @@
  *= require_self
  */
 
+ .error_background{
+   /* background: rgb(243, 141, 165); */
+   background-color: rgb(243, 141, 165);
+ }
 
- #error_explanation{
-   position: absolute;
+ .error_fill{
+  color: rgb(243, 141, 165);  
+ }
+ .error_explanation{
+   /* position: absolute; */
    /* top: 2rem; */
    /* text-align: center; */
-   left: 0;
+   /* left: 0; */
    
-   color: rgb(243, 141, 165);
-   /* text-shadow: 0 0 rgb(252, 255, 250); */
+   background-color: rgb(243, 141, 165);
+   text-shadow: 0 0 rgb(3, 7, 0);
  }
  .min_w-100{
   min-width: 100%; 
  }
 
  #error_side{
-   position: fixed;
-   left: 1rem;
-   top: 6rem;
+   
    color: rgb(243, 141, 165);
  }
  .link_side{

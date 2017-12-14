@@ -1,13 +1,165 @@
 <main class="pa0 black-80">
   <div class="measure center">
     <%= render partial: "transactions/add" %>
+    <div id="new_transaction_form"></div>
     <fieldset class="ba b--transparent ph0 mh0">
-        <legend class="f4 fw6 ph0 mh0"><%= current_user.name %>'s Transaction History</legend>
+        <legend class="tc f4 fw6 mh0"><%= current_user.name %>'s Transaction History</legend>
         <% if current_user.transactions.empty?%>
-            <label class="fw6 lh-copy f6">You have no transaction history; create a transaction to get going!</label>
-        <% else %>
-            <ol class="mr6 pl0 ml0 ba b--light-silver br3"><%= render partial: "transactions/list", collection: @transactions, as: :transaction, locals: {show_link_to_more: true} %></ol>
+         <ol id="preprend-new-transaction" class="pl0 ml0 ba b--light-silver br3">
+            <label id="no-transactions" class="pl3 fw6 lh-copy f6">You have no transaction history; create a transaction to get going!</label>
+         </ol>
+        <% else %>   
+            <ol id="preprend-new-transaction" class="pl0 ml0 ba b--light-silver br3">
+                <%= render partial: "transactions/list", collection: @transactions.reverse, as: :transaction, locals: {show_link_to_more: true} %>
+            </ol>
         <% end %>
     </fieldset>
   </div>
 </main>
+    <script id="new-transaction-form-template" type="text/x-handlebars-template">
+
+        <main class="pa0 pb4 black-80">
+            <div class="tl measure center">
+            
+            <form class="new_transaction" id="new_transaction" action="/users/{{user_id}}/transactions" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" />
+                <%= hidden_field_tag :authenticity_token, form_authenticity_token %>   
+                <div class="mt3">
+                <label class="lh3 fw6 f6 dib" for="transaction_coin_id">Select Coin Type</label>
+                <span class="dib">
+                <select onchange="checkIfListed(this);"name="transaction[coin_id]" id="transaction_coin_id">
+                <option value=""></option>
+                <%= current_user.allCoinOptions %>
+                <option value="-1">Not listed...</option>
+            </select>
+                </span>
+                </div>
+                <fieldset style="display:none;" id="another-coin" class="mb3 pl4 b--moon-silver">
+                    <legend class="f6">For the <em>unlisted</em> cryptocurrency, specify the following: </legend> 
+                    
+            
+                        <label class="lh3 fw6 f6" for="transaction_coin_attributes_name">Name</label>
+                        <input class="pa2 input-reset ba bg-transparent hover-bg-black hover-white" type="text" name="transaction[coin_attributes][name]" id="transaction_coin_attributes_name" value= ><br>
+            
+                        <label class="lh3 fw6 f6" for="transaction_coin_attributes_last_value">Current trading price: $</label>
+                        <input class="pa2 input-reset ba bg-transparent hover-bg-black hover-white" min="0" step="0.01" type="number" name="transaction[coin_attributes][last_value]" id="transaction_coin_attributes_last_value"  value="0.00">
+                        
+                </fieldset>
+            
+                <label class="lh3 fw6 f6" for="transaction_money_in">Money transferred into coins: $</label>
+                <input min="0" step="0.01" class="pa2 input-reset ba bg-transparent hover-bg-black hover-white" type="number" value="0.00" name="transaction[money_in]" id="transaction_money_in" /><br>
+            
+                <label class="lh3 fw6 f6" for="transaction_price_per_coin">Paid Price per coin: $</label>
+                <input min="0" step="0.01" class="pa2 input-reset ba bg-transparent hover-bg-black hover-white" type="number" value="0.00" name="transaction[price_per_coin]" id="transaction_price_per_coin" /><br>
+
+                <div id="add_comment" class="mt3 mb3">
+                    <i class="fa fa-plus-circle ">Add a comment <em>(optional)</em></i>
+                    <%# <label class="lh3 fw6 f6" for="transaction_note_attributes_comment">Comment</label> %>
+                    <%# <input class="pa2 input-reset ba bg-transparent hover-bg-black hover-white" type="text" name="transaction[note_attributes][comments][]" id="transaction_note_attributes_comment" value= ><br> %>
+                     <%# <label class="lh3 fw6 f6" for="transaction_note_attributes_comment">Comment</label> %>
+                    <%# <input class="pa2 input-reset ba bg-transparent hover-bg-black hover-white" type="text" name="transaction[note_attributes][comments][]" id="transaction_note_attributes_comment" value= ><br> %>
+                </div>
+
+                <input id="transaction_form_submit" type="submit" name="commit" value="Create Transaction" class="mt2 b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib" data-disable-with="Create Transaction" />
+
+
+            </form>
+            </div>
+            </main>        
+    </script>   
+    <script id="error-transaction-form-template" type="text/x-handlebars-template">
+
+        <main class="pa0 pb4 black-80">
+            <div class="tl measure center">
+            
+            <form class="new_transaction" id="new_transaction" action="/users/{{user_id}}/transactions" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" />
+                <%= hidden_field_tag :authenticity_token, form_authenticity_token %>   
+                <div class="mt3">
+                <label id="select_coin_type" class="lh3 fw6 f6 dib" for="transaction_coin_id">Select Coin Type</label>
+                <span class="dib">
+                <select onchange="checkIfListed(this);"name="transaction[coin_id]" id="transaction_coin_id" value="{{coin_id}}">
+                <option value=""></option>
+                <%= current_user.allCoinOptions %>
+                <option value="-1">Not listed...</option>
+            </select>
+                </span>
+                </div>
+                <fieldset style="display:none;" id="another-coin" class="mb3 pl4 b--moon-silver">
+                    <legend class="f6">For the <em>unlisted</em> cryptocurrency, specify the following: </legend> 
+                    
+            
+                        <label id="type_name" class="lh3 fw6 f6" for="transaction_coin_attributes_name">Name</label>
+                        <input class="pa2 input-reset ba bg-transparent hover-bg-black hover-white" type="text" name="transaction[coin_attributes][name]" id="transaction_coin_attributes_name" value="{{coin_name}}" ><br>
+            
+                        <label id="type_last_value" class="lh3 fw6 f6" for="transaction_coin_attributes_last_value">Current trading price: $</label>
+                        <input class="pa2 input-reset ba bg-transparent hover-bg-black hover-white" min="0" step="0.01" type="number" name="transaction[coin_attributes][last_value]" id="transaction_coin_attributes_last_value"  value="{{last_value}}">
+                        
+                </fieldset>
+            
+                <label id="type_money_in"class="lh3 fw6 f6" for="transaction_money_in">Money transferred into coins: $</label>
+                <input min="0" step="0.01" class="pa2 input-reset ba bg-transparent hover-bg-black hover-white" type="number" value="{{money_in}}" name="transaction[money_in]" id="transaction_money_in" /><br>
+            
+                <label id="type_price_per_coin"class="lh3 fw6 f6" for="transaction_price_per_coin">Paid Price per coin: $</label>
+                <input min="0" step="0.01" class="pa2 input-reset ba bg-transparent hover-bg-black hover-white" type="number" value="{{price_per_coin}}" name="transaction[price_per_coin]" id="transaction_price_per_coin" /><br>
+
+                <div id="add_comment" class="mt3 mb3">
+                    <i class="fa fa-plus-circle ">Add a comment <em>(optional)</em></i>
+                    <%# <label class="lh3 fw6 f6" for="transaction_note_attributes_comment">Comment</label> %>
+                    <%# <input class="pa2 input-reset ba bg-transparent hover-bg-black hover-white" type="text" name="transaction[note_attributes][comments][]" id="transaction_note_attributes_comment" value= ><br> %>
+                     <%# <label class="lh3 fw6 f6" for="transaction_note_attributes_comment">Comment</label> %>
+                    <%# <input class="pa2 input-reset ba bg-transparent hover-bg-black hover-white" type="text" name="transaction[note_attributes][comments][]" id="transaction_note_attributes_comment" value= ><br> %>
+                </div>
+
+                <input id="transaction_form_submit" type="submit" name="commit" value="Create Transaction" class="mt2 b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib" data-disable-with="Create Transaction" />
+
+
+            </form>
+            </div>
+            </main>        
+    </script>   
+    <script id="transaction-show-template" type="text/x-handlebars-template">
+           <div class='f7 ml5-ns'>Transaction ID: {{id}}</div>
+           <div class='f7 ml5-ns'>Created At: {{created_at}}</div>
+           <div class='f7 ml5-ns'>Updated At: {{updated_at}}</div><br/>
+            <%# :id, :coin_id, :money_in, :price_per_coin, :quantity, :created_at, :updated_at %>
+            <ul class='pl0 f7'>
+            {{#each notes}}
+                <li class='ml5-ns'><p>Comment on {{updated_at}}:</p> 
+                    <p class='pr0-ns pr5' >{{comment}}</p>
+                </li>
+            {{/each}}
+            </ul>
+    </script>
+    <script id="edit-delete-icons-template" type="text/x-handlebars-template">
+
+        <a data-confirm="Are you sure you'd like to delete this transaction?" class="pr0-ns pr5 delete link black-80"
+        rel="nofollow" data-method="delete" href="{{deleteURL}}">
+            <i class="fa fa-trash-o">Delete</i>
+        </a>
+    
+
+        <a class="edit link black-80" href="{{editURL}}">
+             <i class="fa fa-pencil">Edit</i>
+        </a>
+    
+    </script>
+
+
+    <script id="newly-created-transaction-template" type="text/x-handlebars-template">
+        
+        <li class='list ph3 pv2 b--light-silver'>
+            <div class='mt1 ml6-l ml6-ns'>Coin Type: {{coin_name}}</div>
+            <div class='ml6-l ml6-ns'>USD spent: ${{money_in}}</div>
+            <div class='ml6-l ml6-ns'>Price Per Coin: ${{price_per_coin}}</div> 
+            <div class='ml6-l ml6-ns'>Coins purchased: {{quantity}} </div>
+              
+            <i data-txid="{{id}}" data-image="ellipses" data-userid="{{user_id}}" data-id="transaction-show-more-icon" class="ml7 pl6-ns pl8 fa fa-ellipsis-h"></i>
+        </li>
+            <%# first transaction will be on bottom of list, this will format appropriately %>
+            <%# if current_user.transactions.first == transaction %>
+                        <%# <li class='list ph3'> %>
+            <%# <% else %> 
+            <li class='list ph3 bb b--light-silver'>
+            <%# <% end %>
+            <div id="insert-show-more-{{id}}"></div>       
+        </li>
+    </script>

@@ -23,6 +23,12 @@ Transaction.create(user_id: User.first.id, coin_id: Coin.first.id, money_in: 197
 Transaction.create(user_id: User.first.id, coin_id: Coin.first.id, money_in: 950.00, price_per_coin: 303.31)
 
 Transaction.create(user_id: User.first.id, coin_id: Coin.second.id, money_in: 5990.00, price_per_coin: 5730.30)
+<<<<<<< HEAD
+=======
+Transaction.create(user_id: User.first.id, coin_id: Coin.first.id, money_in: 5000.00, price_per_coin: 564.73)
+Transaction.create(user_id: User.first.id, coin_id: Coin.last.id, money_in: 5000.00, price_per_coin: 314.92)
+
+>>>>>>> js-master
 
 Transaction.create(user_id: User.last.id, coin_id: Coin.first.id, money_in: 1355.80, price_per_coin: 337.02)
 Note.create(comment: "a,1of3 Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source.", transaction_id: 17)

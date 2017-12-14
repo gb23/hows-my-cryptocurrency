@@ -21,6 +21,10 @@
 /yarn-error.log
 
 .byebug_history
+<<<<<<< HEAD
 
+=======
+>>>>>>> js-master
 
 /.env
+/.NOTES.md

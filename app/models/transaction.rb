@@ -1,4 +1,5 @@
 class Transaction < ApplicationRecord
+    has_many :notes
     belongs_to :coin, optional: true
     belongs_to :user
 
@@ -16,11 +17,16 @@ class Transaction < ApplicationRecord
     def no_user_input_coin?
         @transaction_params ? @transaction_params[:coin_attributes][:name].empty? : true 
     end
-
+    def note_attributes=(note_attributes)
+        note_attributes[:comments].each do |comment|
+            if !comment.empty? 
+                self.notes.build(comment: comment, tx: self)
+            end
+        end
+    end
     def coin_attributes=(coin_attributes)
         coin_attributes.each do |coin_attribute| 
             if !coin_attribute[1].empty? 
-
                 if coin_attribute[0] == "name"
                     coin_attribute[1] = coin_attribute[1].humanize
     
@@ -33,7 +39,7 @@ class Transaction < ApplicationRecord
                         self.coin = coin
                     end
 
-                elsif coin_attribute[0] == "last_value" && coin_attribute[1] != "0.0"
+                elsif coin_attribute[0] == "last_value" && coin_attribute[1] != "0.00"
                     self.coin = Coin.new if self.coin.nil?
                     self.coin.last_value = coin_attribute[1] 
                 end
@@ -50,9 +56,11 @@ class Transaction < ApplicationRecord
     def did_user_not_type_in_name?
         @transaction_params[:coin_attributes][:name].empty?
     end
-
-    def did_user_not_select_name?
+    def did_user_leave_default_blank_name?
         @transaction_params[:coin_id].empty?
+    end
+    def did_user_not_select_name?
+        @transaction_params[:coin_id].empty? || @transaction_params[:coin_id] == "-1"
     end
 
     def typed_in_coin_name
