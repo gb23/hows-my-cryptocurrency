@@ -3,7 +3,7 @@ function Transaction(attributes){
     this.coin_id = attributes.coin_id;
     this.coin_name = attributes.coin_name;
     this.id = attributes.id;
-    this.last_value = parseInt(attributes.last_value).toFixed(2);
+    this.last_value = parseFloat(attributes.last_value).toFixed(2);
     this.money_in = attributes.money_in.toFixed(2);
     this.price_per_coin = attributes.price_per_coin.toFixed(2);
     this.quantity = attributes.quantity.toFixed(4);
@@ -24,15 +24,66 @@ Transaction.prototype.renderTxItem = function(){
 }
 
 Transaction.prototype.reRenderFormWithErrors = function(){
-    if (this.form === "closed"){
-        const src = $("#error-closed-transaction-form-template").html();
-        const template = Handlebars.compile(src);
-        const newForm = template(this);
-        $("#new_transaction_form").html(newForm);
-        $(`#new_transaction_form option[value="${this.coin_id}"]`).attr("selected", true);
-    } else if (this.form === "open"){
+    let error_count = 0;
+    const src = $("#error-transaction-form-template").html();
+    const template = Handlebars.compile(src);
+    const newForm = template(this);
+    $("#new_transaction_form").html(newForm);
+    $(`#new_transaction_form option[value="${this.coin_id}"]`).attr("selected", true);
 
+    if (this.form === "closed"){
+        
+        
+        //render highlight and instruction if <select> value = "" with instruction Must select Coin Type
+
+        if (this.coin_id === ""){
+           // $("#select_coin_type").text("You must choose a coin type!");
+           $("#select_coin_type").addClass("error_fill");
+           $('select').addClass("error_background");
+           error_count++;
+        }
+    } else if (this.form === "open"){
+ 
+        $("#another-coin").show();
+
+        if (!!this.coin_name === false){
+            $("#type_name").addClass("error_fill");
+            $('#transaction_coin_attributes_name').removeClass("bg-transparent");
+            $('#transaction_coin_attributes_name').addClass("error_background");
+            error_count++;
+        }
+        if (this.last_value === "0.00"){
+            $("#type_last_value").addClass("error_fill");
+            $('#transaction_coin_attributes_last_value').removeClass("bg-transparent");
+            $('#transaction_coin_attributes_last_value').addClass("error_background");
+            error_count++;
+        }
+       //type_last_value
+       //id="transaction_coin_attributes_last_value"
     }
+    if (this.money_in === "0.00"){
+       // $("#type_money_in").text("Money transferred in must be greater than 0! $");
+        $("#type_money_in").addClass("error_fill");
+        $('#transaction_money_in').removeClass("bg-transparent");
+        $('#transaction_money_in').addClass("error_background");
+        error_count++;
+    }
+    if (this.price_per_coin === "0.00"){
+       // $("#type_price_per_coin").text("Price of coin must be greater than 0!");
+        $("#type_price_per_coin").addClass("error_fill");
+        $('#transaction_price_per_coin').removeClass("bg-transparent");
+        $('#transaction_price_per_coin').addClass("error_background");
+        error_count++;
+    }
+    if (error_count > 0){
+        let error = "errors";
+        if (error_count === 1){
+            error = "error";
+        }
+        $("#link_field_set").addClass("pb0");
+        $("#link_field_set").append(`<p class="error_explanation mb0 mt3">Please fix the following ${error_count} ${error}:</p>`);
+    }
+    //render hilight and instruction for money_in and price_per_coin if not valid
     renderNotes(this);
     handleAddCommentClick();
     handleFormSubmitClick();
@@ -85,6 +136,13 @@ function handleAddCommentClick() {
 }
 function handleFormSubmitClick() {
     $("form#new_transaction.new_transaction").on('submit', function(event){
+
+        if ($(".error_explanation").length){
+            $(".error_explanation").remove();
+        }
+        
+        
+        
         //Code below is if want to explore caching typed in coin names so drop down options are fresh   
         // const typedCoinNames = localStorage['typedCoinNames'];
             event.preventDefault();            
@@ -107,7 +165,7 @@ function handleFormSubmitClick() {
                 console.log("called back")
                if (APIresponse.id === null){
                 console.log("Form input not valid!")
-                    
+    
                 const transaction = new Transaction(APIresponse);
                 
                 //delete form
