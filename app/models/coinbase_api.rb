@@ -3,17 +3,17 @@ class CoinbaseApi
     
     def self.get_bitcoin_price
         resp = Faraday.get 'https://api.coinbase.com/v2/prices/BTC-USD/spot'
-        handleResponse(resp)       
+        self.handleResponse(resp)       
     end
 
     def self.get_ethereum_price
         resp = Faraday.get 'https://api.coinbase.com/v2/prices/ETH-USD/spot'  
-        handleResponse(resp) 
+        self.handleResponse(resp) 
     end
 
     def self.get_litecoin_price
         resp = Faraday.get 'https://api.coinbase.com/v2/prices/LTC-USD/spot'
-        handleResponse(resp) 
+        self.handleResponse(resp) 
     end
 
     
