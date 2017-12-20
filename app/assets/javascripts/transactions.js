@@ -123,8 +123,25 @@ $(function() {
        
        handleFormSubmitClick();
        
-    }); 
+    });
+    $('a.toggler').click(function(){
+        $(this).toggleClass('off');
+        handleToggle($(this)); 
+    });
 });
+function handleToggle($toggle) {
+    if ($toggle.hasClass("off")){
+        hideTheoreticalCalculationForm();
+        $('#current-price').show();
+    } else {
+        const coin_name = $toggle.data("coinname");
+        const user_id = $toggle.data("userid");
+        $('#current-price').hide();
+        showTheoreticalCalculationForm({user_id: user_id, coin_name: coin_name});
+
+    }
+}
+
 function handleAddCommentClick() {
     $("#add_comment").on('click', "i", function(){
         $("#add_comment i").remove();
@@ -200,7 +217,15 @@ function restoreCreateATransaction(user_id) {
     $("#create-a-transaction-form").replaceWith(`<a data-user-id="${user_id}" id="create-a-transaction-form" class="link black-80 b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib" href="/users/${user_id}/transactions/new">Create a transaction:</a>`)
     $("#link_field_set").addClass("pb4");
 }
-
+function showTheoreticalCalculationForm(userObj){
+    const src = $("#theoretical-price-form-template").html();
+    const template = Handlebars.compile(src);
+    const newForm = template(userObj);
+    $("#theoretical-price").html(newForm);
+}
+function hideTheoreticalCalculationForm(){
+    $("#theoretical-price").empty();
+}
 function showNewTransactionForm(userIdObj) {
     const src = $("#new-transaction-form-template").html();
     const template = Handlebars.compile(src);
