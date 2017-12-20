@@ -11,7 +11,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :omniauth_providers => [:facebook] 
   
-  #when user is created, user gets wallets of BTC, LTC, ETH
+  #when user is created, user gets wallets of supported Coinbase coins
   after_create :give_wallets
 
   def self.from_omniauth(auth)
