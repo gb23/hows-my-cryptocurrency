@@ -6,7 +6,7 @@
         <legend class="f3 fw6 ph0 mh0"></legend>
         <label class="fw6 lh-copy f4"><%= @wallet.coin.name %> price:</label> 
         <span class="fw6 lh-copy f4"><%=format_dollar_amount_of('%.2f' % @wallet.coin.last_value,"") %></span>
-        <% if big_3_coins_in?(@wallet) %>
+        <% if supported_coins_in?(@wallet) %>
             <% if @wallet.coin.last_value != @wallet.get_current_price%>
                 <%= link_to "Get current price", user_wallet_path(current_user, wallet_for(current_user, @wallet.name)), 
                 class: "link black-80 b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"%>

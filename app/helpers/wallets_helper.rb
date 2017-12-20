@@ -16,8 +16,8 @@ module WalletsHelper
         end
     end
 
-    def big_3_coins_in?(wallet)
-        wallet.coin.name == "Ethereum" || wallet.coin.name == "Bitcoin" || wallet.coin.name == "Litecoin"
+    def supported_coins_in?(wallet)
+        wallet.coin.name == "Ethereum" || wallet.coin.name == "Bitcoin" || wallet.coin.name == "Litecoin" || wallet.coin.name == "Bitcoin Cash"
     end
 end
 

@@ -6,6 +6,11 @@ class CoinbaseApi
         self.handleResponse(resp)       
     end
 
+    def self.get_bitcoin_cash_price
+        resp = Faraday.get 'https://api.coinbase.com/v2/prices/BCH-USD/spot'
+        self.handleResponse(resp)   
+    end
+
     def self.get_ethereum_price
         resp = Faraday.get 'https://api.coinbase.com/v2/prices/ETH-USD/spot'  
         self.handleResponse(resp) 

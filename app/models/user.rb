@@ -60,7 +60,7 @@ class User < ApplicationRecord
 
   def give_wallets
     Coin.all.each do |coin|
-          self.wallets.create(name: coin.name, coin_id: coin.id ) if big_3?(coin)
+          self.wallets.create(name: coin.name, coin_id: coin.id ) if supported_coin?(coin)
     end
   end
 

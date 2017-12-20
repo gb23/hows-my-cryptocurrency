@@ -33,15 +33,15 @@ class Wallet < ApplicationRecord
     end
 
     def get_and_save_current_price 
-        if big_3?(self.coin)
-            self.coin.last_value = CoinbaseApi.send("get_#{self.coin.name.downcase}_price")
+        if supported_coin?(self.coin)
+            self.coin.last_value = CoinbaseApi.send("get_#{self.coin.name.scan(/[A-Z][a-z]*/).join("_").downcase}_price")
             self.coin.save
         end
     end
 
     def get_current_price
-        if big_3?(self.coin)
-            CoinbaseApi.send("get_#{self.coin.name.downcase}_price")
+        if supported_coin?(self.coin)
+            CoinbaseApi.send("get_#{self.coin.name.scan(/[A-Z][a-z]*/).join("_").downcase}_price")
         end
     end
 end
