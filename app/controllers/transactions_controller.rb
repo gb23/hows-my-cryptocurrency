@@ -96,7 +96,36 @@ class TransactionsController < ApplicationController
 
             @transaction.save_coin_possibly_wallet_if_user_typed_in_name(current_user)
 
-            @transaction.save
+            #recalculate quantity 
+            @transaction.quantity = @transaction.money_in / @transaction.price_per_coin
+
+            copyTransaction = Transaction.find_by(id: params[:id])
+            
+            
+            inverseTransaction = Transaction.new(coin_id: copyTransaction.coin.id, money_in: (-1 * copyTransaction.money_in), price_per_coin: (0 * copyTransaction.price_per_coin), quantity: (-1 * copyTransaction.quantity))
+            #update wallet with INVERSE of original (unedited) transaction to zero it out, then update wallet with typed in values 
+            
+            
+            inverseCoin = Coin.find_by(id: inverseTransaction.coin_id)
+            inverseName = inverseCoin.name
+            wallet_to_take_away_from = current_user.wallets.find_by(name: inverseName); 
+           
+            wallet_to_take_away_from.update_wallet_with(inverseTransaction)
+            wallet_to_update = current_user.wallets.find_by(name: @transaction.coin.name)
+            wallet_to_update.update_wallet_with(@transaction)
+
+            #-- disable callbacks
+            # we have to deal with special case 'inverse' transactions when transactions#edit is called.
+            # so normal callbacks will not be beneficial these cases
+            Transaction.skip_callback(:save, :after, :tell_user)
+            Transaction.skip_callback(:save, :after, :tell_wallet)
+            Transaction.skip_callback(:save, :before, :calculate_quantity)
+                    @transaction.save
+            #-- re-enable callbacks
+            Transaction.set_callback(:save, :after, :tell_user)
+            Transaction.set_callback(:save, :after, :tell_wallet)
+            Transaction.set_callback(:save, :before, :calculate_quantity)
+
             redirect_to user_transactions_path(current_user), notice: "Transaction saved!"
         else
             @transaction.run_validation_if_typed_in_name
@@ -114,8 +143,8 @@ class TransactionsController < ApplicationController
         wallet.update_wallet_with(negative_transaction)
         @transaction.destroy 
 
-        #if user has no other transactions with coin_id, delete AND wallet is not Ethereum, Bitcoin, or Litecoin then delete wallet
-        if current_user.transactions.find_by(coin_id: coin_id).nil? && wallet.name != "Ethereum" && wallet.name != "Bitcoin" && wallet.name != "Litecoin"
+        #if user has no other transactions with coin_id, delete AND wallet is not Ethereum, Bitcoin, Bitcoin Cash or Litecoin then delete wallet
+        if current_user.transactions.find_by(coin_id: coin_id).nil? && wallet.name != "Ethereum" && wallet.name != "Bitcoin Cash" && wallet.name != "Bitcoin" && wallet.name != "Litecoin"
             wallet.destroy 
         end
         
