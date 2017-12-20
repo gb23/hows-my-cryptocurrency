@@ -41,7 +41,6 @@ class TransactionsController < ApplicationController
             end
         else
             #these two lines are for validation error generation if using HTML request
-
             @transaction.coin = Coin.new(name: @transaction.typed_in_coin_name, last_value: @transaction.typed_in_last_value) if @transaction.did_user_not_select_name?
             @transaction.run_validation_if_typed_in_name 
 
