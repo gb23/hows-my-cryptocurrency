@@ -4,6 +4,7 @@
 
         <fieldset class="ba b--transparent ph0 mh0">
         <legend class="f3 fw6 ph0 mh0"></legend>
+    <div id="current-price">
         <label class="fw6 lh-copy f4"><%= @wallet.coin.name %> price:</label> 
         <span class="fw6 lh-copy f4"><%=format_dollar_amount_of('%.2f' % @wallet.coin.last_value,"") %></span>
         <% if supported_coins_in?(@wallet) %>
@@ -26,14 +27,25 @@
                 </fieldset>
             <% end %>
         <% end %>
-            <fieldset class="mt1 mb3 pl4 b--moon-silver">
-            <legend class="f6">*OR* perform calculations using a price of your choosing</legend>
-                <%= form_for Coin.new, :url => url_for(:controller => 'wallets', :action => 'create') do |f| %>
-                    <%= f.label :last_value, "Enter theoretical price: $", class: "lh3 fw6 f6" %>
-                    <%= f.number_field :last_value, :min => 0, :step => 0.01, class: "pa2 input-reset ba bg-transparent hover-bg-black hover-white" %>
-                    <%= f.hidden_field :name, value: @wallet.coin.name%>
-                    <%= f.submit "Calculate With Theoretical Price", class: "b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"%>
-                <% end %>
+    </div>
+        <br />
+<%# <span>
+    <label class="switch">
+        <input type="checkbox">
+        <span class="slider"></span>
+    </label>
+    <span>Perform calculations using a price of your choosing</span>
+</span> %>
+<a href="#" data-userid="<%= current_user.id %>" data-coinname="<%= @wallet.coin.name %>" class="toggler off">&nbsp;</a>
+            <fieldset id="theoretical-price" class="mt1 mb3 pl4 b--moon-silver">
+           
+
+                <%#= form_for Coin.new, :url => url_for(:controller => 'wallets', :action => 'create') do |f| %>
+                    <%#= f.label :last_value, "Enter theoretical price: $", class: "lh3 fw6 f6" %>
+                    <%#= f.number_field :last_value, :min => 0, :step => 0.01, class: "pa2 input-reset ba bg-transparent hover-bg-black hover-white" %>
+                    <%#= f.hidden_field :name, value: @wallet.coin.name%>
+                    <%#= f.submit "Calculate With Theoretical Price", class: "b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"%>
+                <%# end %>
             </fieldset>
         </fieldset>
 
@@ -98,3 +110,12 @@
         <% end %>
     </div>
 </main>
+<script id="theoretical-price-form-template" type="text/x-handlebars-template">
+    <form class="new_coin" id="new_coin" action="/users/{{user_id}}/wallets" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="✓">
+     <%= hidden_field_tag :authenticity_token, form_authenticity_token %>  
+            <label class="lh3 fw6 f6" for="coin_last_value">Enter theoretical price: $</label>
+            <input min="0" step="0.01" class="pa2 input-reset ba bg-transparent hover-bg-black hover-white" type="number" value="0.00" name="coin[last_value]" id="coin_last_value">
+            <input value="{{coin_name}}" type="hidden" name="coin[name]" id="coin_name">
+            <input type="submit" name="commit" value="Calculate With Theoretical Price" class="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib" data-disable-with="Calculate With Theoretical Price">
+    </form>
+</script>
