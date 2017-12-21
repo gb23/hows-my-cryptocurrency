@@ -2,8 +2,6 @@ class TransactionsController < ApplicationController
     before_action :find_tx, only: [:show, :edit, :destroy, :update]
 
     def index
-        #if tx has a coin_id, @transactions will be more selectibe query
-        #coming from getJSON: <ActionController::Parameters {"coin_id"=>"1", "controller"=>"transactions", "action"=>"index", "user_id"=>"2"} permitted: false>
         if params[:coin_id].nil?
             @transactions = current_user.transactions
         else
@@ -50,7 +48,7 @@ class TransactionsController < ApplicationController
             else
                 notes = nil
             end
-            if @transaction.did_user_not_select_name? && !@transaction.did_user_leave_default_blank_name?#@transaction.coin_id != -1 #user does NOT choose "not listed..." from drop down selection
+            if @transaction.did_user_not_select_name? && !@transaction.did_user_leave_default_blank_name? #user does NOT choose "not listed..." from drop down selection
                 respond_to do |f|
                     f.json{render json: @transaction.attributes.merge({user_id: current_user.id}.merge({coin_id:transaction_params[:coin_id]}.merge({last_value:transaction_params[:coin_attributes][:last_value]}.merge({notes: notes}.merge({form: "open"}.merge({coin_name:transaction_params[:coin_attributes][:name]}))))))}  
                     f.html{render 'transactions/new' } 
@@ -100,10 +98,8 @@ class TransactionsController < ApplicationController
 
             copyTransaction = Transaction.find_by(id: params[:id])
             
-            
             inverseTransaction = Transaction.new(coin_id: copyTransaction.coin.id, money_in: (-1 * copyTransaction.money_in), price_per_coin: (0 * copyTransaction.price_per_coin), quantity: (-1 * copyTransaction.quantity))
             #update wallet with INVERSE of original (unedited) transaction to zero it out, then update wallet with typed in values 
-            
             
             inverseCoin = Coin.find_by(id: inverseTransaction.coin_id)
             inverseName = inverseCoin.name
@@ -114,8 +110,8 @@ class TransactionsController < ApplicationController
             wallet_to_update.update_wallet_with(@transaction)
 
             #-- disable callbacks
-            # we have to deal with special case 'inverse' transactions when transactions#edit is called.
-            # so normal callbacks will not be beneficial these cases
+            # For an update to transaction, we have to deal with 'inverse' transactions when transactions#edit is called.
+            # so normal callbacks (these assume creation of new transaction) will not be beneficial these cases
             Transaction.skip_callback(:save, :after, :tell_user)
             Transaction.skip_callback(:save, :after, :tell_wallet)
             Transaction.skip_callback(:save, :before, :calculate_quantity)
@@ -149,8 +145,6 @@ class TransactionsController < ApplicationController
         
         redirect_to user_transactions_path(current_user), notice: "Transaction has been deleted!"
     end
-
-   
 
     private
 

@@ -43,7 +43,6 @@ class User < ApplicationRecord
   end
 
   def allCoinOptions
-    #Wallet.where(["user_id = ? and coin_id = ?", self.user_id, self.coin_id]).first
     htmlOptions = ""
     self.wallets.each do |wallet|
       if Coin.all.detect{ |coin| coin.name == wallet.name}
@@ -51,9 +50,6 @@ class User < ApplicationRecord
       end
     end
     htmlOptions.html_safe
-    #<%# <option value="1">Ethereum</option>
-    #<option value="2">Bitcoin</option>
-    #<option value="3">Litecoin</option> %>
   end
 
   private

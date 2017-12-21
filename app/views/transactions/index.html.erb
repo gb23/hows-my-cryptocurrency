@@ -53,10 +53,6 @@
 
                 <div id="add_comment" class="mt3 mb3">
                     <i class="fa fa-plus-circle ">Add a comment <em>(optional)</em></i>
-                    <%# <label class="lh3 fw6 f6" for="transaction_note_attributes_comment">Comment</label> %>
-                    <%# <input class="pa2 input-reset ba bg-transparent hover-bg-black hover-white" type="text" name="transaction[note_attributes][comments][]" id="transaction_note_attributes_comment" value= ><br> %>
-                     <%# <label class="lh3 fw6 f6" for="transaction_note_attributes_comment">Comment</label> %>
-                    <%# <input class="pa2 input-reset ba bg-transparent hover-bg-black hover-white" type="text" name="transaction[note_attributes][comments][]" id="transaction_note_attributes_comment" value= ><br> %>
                 </div>
 
                 <input id="transaction_form_submit" type="submit" name="commit" value="Create Transaction" class="mt2 b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib" data-disable-with="Create Transaction" />
@@ -64,8 +60,9 @@
 
             </form>
             </div>
-            </main>        
-    </script>   
+        </main>        
+    </script>  
+
     <script id="error-transaction-form-template" type="text/x-handlebars-template">
 
         <main class="pa0 pb4 black-80">
@@ -77,16 +74,15 @@
                 <label id="select_coin_type" class="lh3 fw6 f6 dib" for="transaction_coin_id">Select Coin Type</label>
                 <span class="dib">
                 <select onchange="checkIfListed(this);"name="transaction[coin_id]" id="transaction_coin_id" value="{{coin_id}}">
-                <option value=""></option>
-                <%= current_user.allCoinOptions %>
-                <option value="-1">Not listed...</option>
-            </select>
+                    <option value=""></option>
+                    <%= current_user.allCoinOptions %>
+                    <option value="-1">Not listed...</option>
+                </select>
                 </span>
                 </div>
                 <fieldset style="display:none;" id="another-coin" class="mb3 pl4 b--moon-silver">
                     <legend class="f6">For the <em>unlisted</em> cryptocurrency, specify the following: </legend> 
-                    
-            
+
                         <label id="type_name" class="lh3 fw6 f6" for="transaction_coin_attributes_name">Name</label>
                         <input class="pa2 input-reset ba bg-transparent hover-bg-black hover-white" type="text" name="transaction[coin_attributes][name]" id="transaction_coin_attributes_name" value="{{coin_name}}" ><br>
             
@@ -103,10 +99,7 @@
 
                 <div id="add_comment" class="mt3 mb3">
                     <i class="fa fa-plus-circle ">Add a comment <em>(optional)</em></i>
-                    <%# <label class="lh3 fw6 f6" for="transaction_note_attributes_comment">Comment</label> %>
-                    <%# <input class="pa2 input-reset ba bg-transparent hover-bg-black hover-white" type="text" name="transaction[note_attributes][comments][]" id="transaction_note_attributes_comment" value= ><br> %>
-                     <%# <label class="lh3 fw6 f6" for="transaction_note_attributes_comment">Comment</label> %>
-                    <%# <input class="pa2 input-reset ba bg-transparent hover-bg-black hover-white" type="text" name="transaction[note_attributes][comments][]" id="transaction_note_attributes_comment" value= ><br> %>
+                   
                 </div>
 
                 <input id="transaction_form_submit" type="submit" name="commit" value="Create Transaction" class="mt2 b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib" data-disable-with="Create Transaction" />
@@ -114,13 +107,12 @@
 
             </form>
             </div>
-            </main>        
+        </main>        
     </script>   
     <script id="transaction-show-template" type="text/x-handlebars-template">
            <div class='f7 ml5-ns'>Transaction ID: {{id}}</div>
            <div class='f7 ml5-ns'>Created At: {{created_at}}</div>
            <div class='f7 ml5-ns'>Updated At: {{updated_at}}</div><br/>
-            <%# :id, :coin_id, :money_in, :price_per_coin, :quantity, :created_at, :updated_at %>
             <ul class='pl0 f7'>
             {{#each notes}}
                 <li class='ml5-ns'><p>Comment on {{updated_at}}:</p> 
@@ -154,12 +146,9 @@
               
             <i data-txid="{{id}}" data-image="ellipses" data-userid="{{user_id}}" data-id="transaction-show-more-icon" class="ml7 pl6-ns pl8 fa fa-ellipsis-h"></i>
         </li>
-            <%# first transaction will be on bottom of list, this will format appropriately %>
-            <%# if current_user.transactions.first == transaction %>
-                        <%# <li class='list ph3'> %>
-            <%# <% else %> 
+
             <li class='list ph3 bb b--light-silver'>
-            <%# <% end %>
+
             <div id="insert-show-more-{{id}}"></div>       
         </li>
     </script>

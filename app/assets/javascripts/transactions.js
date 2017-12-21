@@ -30,22 +30,15 @@ Transaction.prototype.reRenderFormWithErrors = function(){
     const newForm = template(this);
     $("#new_transaction_form").html(newForm);
     $(`#new_transaction_form option[value="${this.coin_id}"]`).attr("selected", true);
-
+    //"closed" form is if user has not selected "not listed..." (has not 'opened' the other options)
     if (this.form === "closed"){
-        
-        
-        //render highlight and instruction if <select> value = "" with instruction Must select Coin Type
-
         if (this.coin_id === ""){
-           // $("#select_coin_type").text("You must choose a coin type!");
            $("#select_coin_type").addClass("error_fill");
            $('select').addClass("error_background");
            error_count++;
         }
     } else if (this.form === "open"){
- 
         $("#another-coin").show();
-
         if (!!this.coin_name === false){
             $("#type_name").addClass("error_fill");
             $('#transaction_coin_attributes_name').removeClass("bg-transparent");
@@ -58,18 +51,14 @@ Transaction.prototype.reRenderFormWithErrors = function(){
             $('#transaction_coin_attributes_last_value').addClass("error_background");
             error_count++;
         }
-       //type_last_value
-       //id="transaction_coin_attributes_last_value"
     }
     if (this.money_in === "0.00"){
-       // $("#type_money_in").text("Money transferred in must be greater than 0! $");
         $("#type_money_in").addClass("error_fill");
         $('#transaction_money_in').removeClass("bg-transparent");
         $('#transaction_money_in').addClass("error_background");
         error_count++;
     }
     if (this.price_per_coin === "0.00"){
-       // $("#type_price_per_coin").text("Price of coin must be greater than 0!");
         $("#type_price_per_coin").addClass("error_fill");
         $('#transaction_price_per_coin').removeClass("bg-transparent");
         $('#transaction_price_per_coin').addClass("error_background");
@@ -83,17 +72,11 @@ Transaction.prototype.reRenderFormWithErrors = function(){
         $("#link_field_set").addClass("pb0");
         $("#link_field_set").append(`<p class="error_explanation mb0 mt3">Please fix the following ${error_count} ${error}:</p>`);
     }
-    //render hilight and instruction for money_in and price_per_coin if not valid
+    //render highlight and instruction for money_in and price_per_coin if not valid
     renderNotes(this);
     handleAddCommentClick();
     handleFormSubmitClick();
-    //rerender form //open vs closed??? if open before want it to remain open
-    //add error instructions
-    //add error highlighting
-
 }
-
-
 
 $(function() {
    $("#list_txs_in_wallet").on('click', function(){
@@ -114,17 +97,16 @@ $(function() {
             changeView(image, $thisIcon, APIresponse, tx_id, user_id); 
         }); 
    });
-
    $("fieldset#link_field_set").on('click',"#create-a-transaction-form", function(event){
        event.preventDefault();
        const user_id = $(this).data("userId");
        showNewTransactionForm({user_id: user_id});
        handleAddCommentClick();
-       
        handleFormSubmitClick();
-       
     }); 
 });
+
+
 function handleAddCommentClick() {
     $("#add_comment").on('click', "i", function(){
         $("#add_comment i").remove();
@@ -140,50 +122,35 @@ function handleFormSubmitClick() {
         if ($(".error_explanation").length){
             $(".error_explanation").remove();
         }
-        
-        
-        
-        //Code below is if want to explore caching typed in coin names so drop down options are fresh   
-        // const typedCoinNames = localStorage['typedCoinNames'];
-            event.preventDefault();            
-            console.log("click");
-                   //Code below is if want to explore caching typed in coin names so drop down options are fresh   
-            // if ($(this)["0"][4].value !== ""){
-           //     typedCoinNames.push($(this)["0"][4].value);
-           //     localStorage['typedCoinNames'] = typedCoinNames;
-           // }
-            const params = $(this).serialize();
-            const address = $(this).attr("action");
-            const user_id =  /\d+/.exec(address)[0]
-            const posting = $.ajax({
-                type: "POST",
-                url: address, 
-                data: params,
-                dataType: "json"
-            }); 
-            posting.done(function(APIresponse) {     
-                console.log("called back")
-               if (APIresponse.id === null){
+
+        event.preventDefault();            
+        console.log("click");
+
+        const params = $(this).serialize();
+        const address = $(this).attr("action");
+        const user_id =  /\d+/.exec(address)[0]
+        const posting = $.ajax({
+            type: "POST",
+            url: address, 
+            data: params,
+            dataType: "json"
+        }); 
+        posting.done(function(APIresponse) {     
+            console.log("called back")
+            if (APIresponse.id === null){
                 console.log("Form input not valid!")
-    
                 const transaction = new Transaction(APIresponse);
-                
-                //delete form
                 eliminateFormFromView();
-
                 transaction.reRenderFormWithErrors();
-                
-                
+            } else {
+            console.log("APIresponse is good!")
+            const transaction = new Transaction(APIresponse);
+            transaction.renderTxItem();
+            restoreCreateATransaction(user_id);
 
-               } else {
-                console.log("APIresponse is good!")
-                const transaction = new Transaction(APIresponse);
-                transaction.renderTxItem();
-                restoreCreateATransaction(user_id);
-
-               }
-            }); 
-        });
+            }
+        }); 
+    });
 }
 function checkIfListed(selection) {
     if (selection.value == "-1"){
@@ -200,18 +167,14 @@ function restoreCreateATransaction(user_id) {
     $("#create-a-transaction-form").replaceWith(`<a data-user-id="${user_id}" id="create-a-transaction-form" class="link black-80 b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib" href="/users/${user_id}/transactions/new">Create a transaction:</a>`)
     $("#link_field_set").addClass("pb4");
 }
-
 function showNewTransactionForm(userIdObj) {
     const src = $("#new-transaction-form-template").html();
     const template = Handlebars.compile(src);
     const newForm = template(userIdObj);
     $("#new_transaction_form").html(newForm);
-
-
     $("#create-a-transaction-form").replaceWith('<p id="create-a-transaction-form" class="black-80 mt0 mb0 pt1 b ph3 b--black f6" >Create a transaction:</p>')
     $("#link_field_set").removeClass("pb4");
 }
-
 function showTxsWithTemplate(txs) {
     const src = $("#transaction-template").html();
     const template = Handlebars.compile(src);
