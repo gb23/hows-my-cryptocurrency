@@ -63,13 +63,14 @@ class TransactionsController < ApplicationController
     end
 
     def show
-        not_valid_transaction("view") if !authenticate(@transaction)
-
-        respond_to do |f|
-            f.html { render :show }
-            f.json { render json: @transaction }
+        if !authenticate(@transaction)
+            not_valid_transaction("view") 
+        else
+            respond_to do |f|
+                f.html { render :show }
+                f.json { render json: @transaction }
+            end
         end
-
     end
 
     def edit
@@ -161,7 +162,7 @@ class TransactionsController < ApplicationController
             false
         else
             current_user.transactions.find do |tx|
-            tx.id == transaction.id 
+                tx.id == transaction.id 
             end
         end
     end
