@@ -6,7 +6,7 @@
 
  X2. Must render at least one show page (show resource - 'one specific thing') via jQuery and an Active Model Serialization JSON Backend. For example, in the blog domain, you might allow a user to sift through the posts by clicking a 'Next' button on the posts show page, with the next post being fetched and rendered via JQuery/AJAX.
  =transactions index page will have ability to display an individual transaction show resource (if you click on 'i'
- you will be given the show view) (next, back to go through show views?)
+ you will be given the show view)
 
  X3. The rails API must reveal at least one `has-many` relationship in the JSON that is then rendered to the page. For example if each of those posts has many comments, you could render those comments as well on that show page.
  = building off of requirement 2, when on transactions index page and the 'i' is clicked, the show view of transaction will appear as well as NOTES the user may have entered about the transaction. (Transaction has many NOTES)
