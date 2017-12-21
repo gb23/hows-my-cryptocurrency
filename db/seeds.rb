@@ -29,6 +29,10 @@ Transaction.create(user_id: User.first.id, coin_id: Coin.first.id, money_in: 500
 Transaction.create(user_id: User.first.id, coin_id: Coin.third.id, money_in: 311.90, price_per_coin: 314.92)
 Transaction.create(user_id: User.first.id, coin_id: Coin.last.id, money_in: 4087.73, price_per_coin: 5300.00)
 
+Transaction.create(user_id: User.first.id, coin_id: Coin.last.id, money_in: 3.41, price_per_coin: 3419.99)
+Transaction.create(user_id: User.first.id, coin_id: Coin.last.id, money_in: 617.85, price_per_coin: 3420.00)
+Transaction.create(user_id: User.first.id, coin_id: Coin.last.id, money_in: 232.90, price_per_coin: 3438.98)
+
 
 
 Transaction.create(user_id: User.last.id, coin_id: Coin.first.id, money_in: 1355.80, price_per_coin: 337.02)
